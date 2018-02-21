@@ -80,7 +80,7 @@ public:
       // correctly normalized.
    }
 
-   const EdispInterpolator& interpolator() const {
+   EdispInterpolator& interpolator() const {
      if (m_interpolator == 0) {
        m_interpolator = new EdispInterpolator(m_fitsfile, m_extname, m_nrow);
      }
