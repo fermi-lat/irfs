@@ -135,7 +135,6 @@ psfIntegral(double psi, double sigma, double gamma) const {
    double err(1e-3);
    int ierr(0);
 
-//   std::err << set_precision(10) << mum << ", " << roi_radius << ", " << psi << std::endl;
    double firstIntegral(0);
    if ( mum < 0.9999 ) {
       PsfIntegrand1 psfIntegrand1(sigma, gamma);
