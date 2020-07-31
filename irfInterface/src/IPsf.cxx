@@ -278,7 +278,7 @@ double IPsf::psfIntegral(IPsf * self,
    long ierr(0);
 
    double firstIntegral(0);
-   if (psi < roi_radius) {
+   if (mum < 0.99) {
       firstIntegral = 
          st_facilities::GaussianQuadrature::integrate(&psfIntegrand1, mum, 
                                                       one, err, ierr);
