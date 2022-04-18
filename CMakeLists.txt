@@ -1,0 +1,5 @@
+add_subdirectory(irfInterface)
+add_subdirectory(irfUtil)
+add_subdirectory(testResponse)
+add_subdirectory(latResponse)
+add_subdirectory(irfLoader)
