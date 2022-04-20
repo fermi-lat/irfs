@@ -15,7 +15,7 @@ target_include_directories(
 )
 
 target_link_libraries(
-    testResponse PUBLIC astro
+  testResponse PUBLIC astro
   irfInterface irfUtil
   tip
   st_facilities
@@ -28,4 +28,18 @@ add_executable(test_testResponse src/test/test.cxx)
 target_link_libraries(
   test_testResponse
   PRIVATE PkgConfig::cppunit testResponse
+)
+
+###############################################################
+# Installation
+###############################################################
+install(DIRECTORY testResponse DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
+
+install(
+  TARGETS testResponse
+  # EXPORT fermiTargets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )

@@ -25,3 +25,18 @@ target_link_libraries(gtirfs PRIVATE irfLoader)
 ###### Tests ######
 add_executable(test_irfLoader src/test/test.cxx)
 target_link_libraries(test_irfLoader PRIVATE PkgConfig::cppunit irfLoader)
+
+###############################################################
+# Installation
+###############################################################
+install(DIRECTORY irfLoader DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
+install(DIRECTORY pfiles/ DESTINATION ${FERMI_INSTALL_PFILESDIR})
+
+install(
+  TARGETS irfLoader gtirfs
+  # EXPORT fermiTargets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
