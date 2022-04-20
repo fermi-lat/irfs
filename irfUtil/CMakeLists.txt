@@ -11,7 +11,7 @@ add_library(
 add_library(Fermitools::irfUtil ALIAS irfUtil)
 
 target_include_directories(
-    irfUtil PUBLIC
+  irfUtil PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:>
 )
@@ -30,8 +30,8 @@ target_link_libraries(p8_test_irfUtil PRIVATE irfUtil)
 install(DIRECTORY irfUtil DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
 
 install(
-  TARGETS irfUtil
-  # EXPORT fermiTargets
+  TARGETS irfUtil test_irfUtil p8_test_irfUtil
+  EXPORT fermiTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib

@@ -36,7 +36,7 @@ target_link_libraries(
 install(DIRECTORY testResponse DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
 
 install(
-  TARGETS testResponse
+  TARGETS testResponse test_testResponse
   # EXPORT fermiTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION lib

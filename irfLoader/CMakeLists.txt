@@ -33,7 +33,7 @@ install(DIRECTORY irfLoader DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
 install(DIRECTORY pfiles/ DESTINATION ${FERMI_INSTALL_PFILESDIR})
 
 install(
-  TARGETS irfLoader gtirfs
+  TARGETS irfLoader gtirfs test_irfLoader
   # EXPORT fermiTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION lib
