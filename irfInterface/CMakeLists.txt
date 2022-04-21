@@ -14,7 +14,11 @@ target_include_directories(
   $<INSTALL_INTERFACE:>
 )
 
-target_link_libraries(irfInterface PUBLIC st_facilities PRIVATE astro)
+target_link_libraries(
+  irfInterface
+  PUBLIC st_facilities
+  PRIVATE astro tip CLHEP::CLHEP
+)
 
 ###### Tests ######
 add_executable(test_irfInterface src/test/Edisp.cxx src/test/Psf.cxx src/test/test.cxx)
