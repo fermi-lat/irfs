@@ -16,13 +16,16 @@ target_include_directories(
   $<INSTALL_INTERFACE:>
 )
 
-target_link_libraries(irfUtil PUBLIC astro tip st_facilities PkgConfig::f2c)
+target_link_libraries(
+  irfUtil
+  PRIVATE astro tip st_facilities st_facilities PkgConfig::cfitsio
+)
 
 ###### Tests ######
 add_executable(test_irfUtil src/test/test.cxx)
 add_executable(p8_test_irfUtil src/test/p8_test.cxx)
-target_link_libraries(test_irfUtil PRIVATE irfUtil)
-target_link_libraries(p8_test_irfUtil PRIVATE irfUtil)
+target_link_libraries(test_irfUtil PRIVATE irfUtil tip)
+target_link_libraries(p8_test_irfUtil PRIVATE irfUtil tip)
 
 ###############################################################
 # Installation

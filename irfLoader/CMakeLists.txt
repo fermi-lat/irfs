@@ -12,11 +12,10 @@ target_include_directories(
 )
 
 target_link_libraries(
-  irfLoader PUBLIC
-  facilities st_app st_stream st_facilities irfInterface latResponse testResponse tip
+  irfLoader
+  PUBLIC facilities st_app st_stream st_facilities irfInterface dc1aResponse
+  dc1Response dc2Response latResponse testResponse tip
 )
-
-target_compile_definitions(irfLoader PRIVATE ST_USER)
 
 ###### Executables ######
 add_executable(gtirfs src/gtirfs/gtirfs.cxx)

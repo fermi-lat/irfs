@@ -58,7 +58,7 @@ target_link_libraries(
 # Installation
 ###############################################################
 install(DIRECTORY latResponse DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
-install(DIRECTORY data/ DESTINATION ${FERMI_INSTALL_DATADIR})
+install(DIRECTORY data/ DESTINATION ${FERMI_INSTALL_REFDATADIR}/latResponse)
 install(DIRECTORY pfiles/ DESTINATION ${FERMI_INSTALL_PFILESDIR})
 
 install(

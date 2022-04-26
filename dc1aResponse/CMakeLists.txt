@@ -1,39 +1,45 @@
 add_library(
-  testResponse SHARED
+  dc1aResponse SHARED
   src/Aeff.cxx
   src/Edisp.cxx
   src/IrfLoader.cxx
   src/loadIrfs.cxx
   src/Psf.cxx
 )
-add_library(Fermitools::testResponse ALIAS testResponse)
 
 target_include_directories(
-  testResponse PUBLIC
+  dc1aResponse PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:>
 )
 
 target_link_libraries(
-  testResponse
-  PRIVATE astro irfInterface irfUtil tip st_facilities CLHEP::CLHEP
+  dc1aResponse
+  PUBLIC irfInterface
+  PRIVATE st_facilities irfUtil astro tip CLHEP::CLHEP
 )
 
 ###### Tests ######
-add_executable(test_testResponse src/test/test.cxx)
+add_executable(test_dc1aResponse src/test/test.cxx)
+target_include_directories(
+  test_dc1aResponse PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
+  $<INSTALL_INTERFACE:>
+)
 target_link_libraries(
-  test_testResponse
-  PRIVATE testResponse irfInterface astro PkgConfig::cppunit
+  test_dc1aResponse
+  PRIVATE astro irfInterface dc1aResponse
 )
 
 ###############################################################
 # Installation
 ###############################################################
-install(DIRECTORY testResponse DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
+install(DIRECTORY dc1aResponse DESTINATION ${FERMI_INSTALL_INCLUDEDIR})
 
 install(
-  TARGETS testResponse test_testResponse
-  # EXPORT fermiTargets
+  TARGETS dc1aResponse test_dc1aResponse
+  EXPORT fermiTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
