@@ -9,3 +9,5 @@ add_subdirectory(testResponse)
 
 add_subdirectory(irfLoader)
 add_subdirectory(pyIrfLoader)
+
+add_subdirectory(caldb)
