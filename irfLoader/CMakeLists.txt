@@ -17,6 +17,10 @@ target_link_libraries(
   dc1Response dc2Response latResponse testResponse tip
 )
 
+if(NOT APPLE)
+  target_compile_definitions(irfLoader PUBLIC TRAP_FPE)
+endif()
+
 ###### Executables ######
 add_executable(gtirfs src/gtirfs/gtirfs.cxx)
 target_link_libraries(gtirfs PRIVATE irfLoader)
