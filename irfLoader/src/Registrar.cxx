@@ -29,7 +29,8 @@
 namespace irfLoader {
 
 Registrar::Registrar() {
-   char * caldb(::getenv("CALDB"));
+   const char *caldbstring = "CALDB";
+   char *caldb(::getenv(caldbstring));
    /// This calls facilities::commonUtilities::setupEnvironment().
    /// Using this Singleton instance instead of setupEnvironment()
    /// ensures that it will only be called once so that any overridden
