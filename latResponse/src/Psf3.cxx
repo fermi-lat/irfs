@@ -107,8 +107,8 @@ double Psf3::value(double separation, double energy, double theta,
    (void)(time);
 
    double tt, uu;
-   std::vector<double> cornerEnergies(4);
-   std::vector<size_t> indx(4);
+   std::array<double, 4> cornerEnergies{};
+   std::array<size_t, 4> indx{};
    getCornerPars(energy, theta, tt, uu, cornerEnergies, indx);
 
    double sep(separation*M_PI/180.);
@@ -129,8 +129,8 @@ double Psf3::angularIntegral(double energy, double theta,
    }
 
    double tt, uu;
-   std::vector<double> cornerEnergies(4);
-   std::vector<size_t> indx(4);
+   std::array<double, 4> cornerEnergies{};
+   std::array<size_t, 4> indx{};
    getCornerPars(energy, theta, tt, uu, cornerEnergies, indx);
    
    std::vector<double> yvals(4);
@@ -180,13 +180,13 @@ double Psf3::angularIntegral(double energy,
    }
 
    double tt, uu;
-   std::vector<double> cornerEnergies(4);
-   std::vector<size_t> indx(4);
+   std::array<double, 4> cornerEnergies{};
+   std::array<size_t, 4> indx{};
    getCornerPars(energy, theta, tt, uu, cornerEnergies, indx);
 
    double psi(srcDir.difference(cone.center()));
 
-   std::vector<double> yvals(4);
+   std::array<double, 4> yvals{};
    for (size_t i(0); i < 4; i++) {
       yvals[i] = angularIntegral(cornerEnergies[i], psi,
                                  m_parVectors[indx[i]]);
@@ -395,8 +395,8 @@ void Psf3::normalize_pars(double radius) {
 
 void Psf3::getCornerPars(double energy, double theta,
                           double & tt, double & uu,
-                          std::vector<double> & cornerEnergies,
-                          std::vector<size_t> & indx) const {
+                          std::array<double, 4> & cornerEnergies,
+                          std::array<size_t, 4> & indx) const {
    double logE(std::log10(energy));
    double costh(std::cos(theta*M_PI/180.));
    int i(findIndex(m_logEs, logE));

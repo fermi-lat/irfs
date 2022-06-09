@@ -1,5 +1,5 @@
 add_library(
-  irfInterface SHARED
+  irfInterface 
   src/IEdisp.cxx
   src/IEfficiencyFactor.cxx
   src/IPsf.cxx

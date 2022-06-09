@@ -1,5 +1,5 @@
 add_library(
-  testResponse SHARED
+  testResponse 
   src/Aeff.cxx
   src/Edisp.cxx
   src/IrfLoader.cxx

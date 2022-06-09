@@ -1,5 +1,5 @@
 add_library(
-  irfLoader SHARED
+  irfLoader 
   src/Loader.cxx
   src/Registrar.cxx
 )

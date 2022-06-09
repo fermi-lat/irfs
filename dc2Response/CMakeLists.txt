@@ -1,5 +1,5 @@
 add_library(
-  dc2Response SHARED
+  dc2Response 
   src/Aeff.cxx
   src/DC2.cxx
   src/Edisp.cxx

@@ -1,5 +1,5 @@
 add_library(
-  dc1Response SHARED
+  dc1Response 
   src/AeffDC1.cxx
   src/DC1.cxx
   src/EdispDC1.cxx

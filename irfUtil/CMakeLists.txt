@@ -1,5 +1,5 @@
 add_library(
-  irfUtil STATIC
+  irfUtil 
   src/EventTypeMapper.cxx
   src/HdCaldb.cxx
   src/HDgtcalf.c

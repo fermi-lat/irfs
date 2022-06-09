@@ -1,5 +1,5 @@
 add_library(
-  latResponse STATIC
+  latResponse 
   src/Aeff.cxx
   src/AeffEpochDep.cxx
   src/Bilinear.cxx

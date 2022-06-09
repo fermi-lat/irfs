@@ -1,5 +1,5 @@
 add_library(
-  dc1aResponse SHARED
+  dc1aResponse 
   src/Aeff.cxx
   src/Edisp.cxx
   src/IrfLoader.cxx
