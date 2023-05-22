@@ -120,7 +120,7 @@ plot_curve(energies, aeff(energies, aeffObj=aeff_b), oplot=1, lineStyle=':')
 def aeff_profile(inc, aeffObj=None, energy=1e3, phi=0):
     return aeffObj.value(energy, inc, phi)
 
-thetas = num.arange(70, dtype=num.float)
+thetas = num.arange(70, dtype=float)
 
 plot3 = plot_curve(thetas, aeff_profile(thetas, aeffObj=aeff_f),
                    xname='inclination (deg)', yname='eff. area (cm^2)')
