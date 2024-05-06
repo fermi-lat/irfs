@@ -18,7 +18,7 @@ target_include_directories(
 
 target_link_libraries(
   irfUtil
-  PRIVATE astro tip st_facilities st_facilities PkgConfig::cfitsio
+  PRIVATE astro tip st_facilities st_facilities cfitsio::cfitsio
 )
 
 ###### Tests ######

@@ -27,7 +27,7 @@ target_link_libraries(gtirfs PRIVATE irfLoader)
 
 ###### Tests ######
 add_executable(test_irfLoader src/test/test.cxx)
-target_link_libraries(test_irfLoader PRIVATE PkgConfig::cppunit irfLoader)
+target_link_libraries(test_irfLoader PRIVATE CppUnit::CppUnit irfLoader)
 
 ###############################################################
 # Installation

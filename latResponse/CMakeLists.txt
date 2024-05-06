@@ -51,7 +51,7 @@ target_include_directories(
 )
 target_link_libraries(
   test_latResponse
-  PRIVATE astro irfInterface PkgConfig::cppunit latResponse
+  PRIVATE astro irfInterface CppUnit::CppUnit latResponse
 )
 
 ###############################################################

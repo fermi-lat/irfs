@@ -23,7 +23,7 @@ target_link_libraries(
 add_executable(test_testResponse src/test/test.cxx)
 target_link_libraries(
   test_testResponse
-  PRIVATE testResponse irfInterface astro PkgConfig::cppunit
+  PRIVATE testResponse irfInterface astro CppUnit::CppUnit
 )
 
 ###############################################################
