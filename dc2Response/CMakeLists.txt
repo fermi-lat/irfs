@@ -22,7 +22,8 @@ target_link_libraries(
   irfUtil
   astro
   tip
-  CLHEP::CLHEP
+  CLHEP::RandomS
+  CLHEP::GeometryS
 )
 
 ###### Tests ######

@@ -17,7 +17,7 @@ target_include_directories(
 target_link_libraries(
   irfInterface
   PUBLIC st_facilities
-  PRIVATE astro tip CLHEP::CLHEP
+  PRIVATE astro tip CLHEP::GeometryS CLHEP::RandomS
 )
 
 ###### Tests ######

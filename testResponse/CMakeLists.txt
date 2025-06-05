@@ -16,7 +16,7 @@ target_include_directories(
 
 target_link_libraries(
   testResponse
-  PRIVATE astro irfInterface irfUtil tip st_facilities CLHEP::CLHEP
+  PRIVATE astro irfInterface irfUtil tip st_facilities CLHEP::RandomS CLHEP::GeometryS
 )
 
 ###### Tests ######

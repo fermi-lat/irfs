@@ -33,7 +33,6 @@ target_include_directories(
 target_link_libraries(
   latResponse PRIVATE
   astro
-  CLHEP::CLHEP
   irfInterface
   irfUtil
   st_facilities

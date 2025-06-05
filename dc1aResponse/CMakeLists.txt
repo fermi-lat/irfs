@@ -16,7 +16,7 @@ target_include_directories(
 target_link_libraries(
   dc1aResponse
   PUBLIC irfInterface
-  PRIVATE st_facilities irfUtil astro tip CLHEP::CLHEP
+  PRIVATE st_facilities irfUtil astro tip CLHEP::RandomS CLHEP::GeometryS
 )
 
 ###### Tests ######
