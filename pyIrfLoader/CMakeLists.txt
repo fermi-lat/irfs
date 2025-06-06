@@ -17,7 +17,8 @@ target_include_directories(
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}> $<INSTALL_INTERFACE:>
 )
 
-target_link_libraries(pyIrfLoader PRIVATE irfLoader Python3::Python)
+target_link_libraries(pyIrfLoader PRIVATE
+    irfLoader Python3::Python CLHEP::VectorS CLHEP::RandomS)
 
 if(APPLE)
   target_link_options(pyIrfLoader PRIVATE -bundle -flat_namespace)
