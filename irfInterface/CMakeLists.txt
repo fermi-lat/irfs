@@ -21,6 +21,8 @@ target_link_libraries(
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_irfInterface src/test/Edisp.cxx src/test/Psf.cxx src/test/test.cxx)
 target_link_libraries(test_irfInterface PRIVATE astro CppUnit::CppUnit irfInterface)
 

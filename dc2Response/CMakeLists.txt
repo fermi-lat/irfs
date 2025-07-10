@@ -27,6 +27,8 @@ target_link_libraries(
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_dc2Response src/test/test.cxx)
 target_include_directories(
   test_dc2Response PUBLIC
