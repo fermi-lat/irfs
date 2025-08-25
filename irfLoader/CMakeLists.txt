@@ -22,6 +22,8 @@ if(NOT APPLE)
 endif()
 
 ###### Executables ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(gtirfs src/gtirfs/gtirfs.cxx)
 target_link_libraries(gtirfs PRIVATE irfLoader)
 

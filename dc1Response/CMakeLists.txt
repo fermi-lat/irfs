@@ -21,10 +21,13 @@ target_link_libraries(
   irfUtil
   astro
   tip
-  CLHEP::CLHEP
+  CLHEP::RandomS
+  CLHEP::GeometryS
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_dc1Response src/test/test.cxx)
 target_include_directories(
   test_dc1Response PUBLIC

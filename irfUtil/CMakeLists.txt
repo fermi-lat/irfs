@@ -22,6 +22,8 @@ target_link_libraries(
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_irfUtil src/test/test.cxx)
 add_executable(p8_test_irfUtil src/test/p8_test.cxx)
 target_link_libraries(test_irfUtil PRIVATE irfUtil tip)

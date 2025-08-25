@@ -16,10 +16,12 @@ target_include_directories(
 
 target_link_libraries(
   testResponse
-  PRIVATE astro irfInterface irfUtil tip st_facilities CLHEP::CLHEP
+  PRIVATE astro irfInterface irfUtil tip st_facilities CLHEP::RandomS CLHEP::GeometryS
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_testResponse src/test/test.cxx)
 target_link_libraries(
   test_testResponse

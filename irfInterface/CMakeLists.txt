@@ -17,10 +17,12 @@ target_include_directories(
 target_link_libraries(
   irfInterface
   PUBLIC st_facilities
-  PRIVATE astro tip CLHEP::CLHEP
+  PRIVATE astro tip CLHEP::GeometryS CLHEP::RandomS
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_irfInterface src/test/Edisp.cxx src/test/Psf.cxx src/test/test.cxx)
 target_link_libraries(test_irfInterface PRIVATE astro CppUnit::CppUnit irfInterface)
 

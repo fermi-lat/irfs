@@ -16,10 +16,12 @@ target_include_directories(
 target_link_libraries(
   dc1aResponse
   PUBLIC irfInterface
-  PRIVATE st_facilities irfUtil astro tip CLHEP::CLHEP
+  PRIVATE st_facilities irfUtil astro tip CLHEP::RandomS CLHEP::GeometryS
 )
 
 ###### Tests ######
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 add_executable(test_dc1aResponse src/test/test.cxx)
 target_include_directories(
   test_dc1aResponse PUBLIC
