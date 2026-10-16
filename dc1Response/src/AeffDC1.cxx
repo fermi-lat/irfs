@@ -60,19 +60,19 @@ void AeffDC1::read_FITS_table() {
    }
 }
 
-double AeffDC1::value(double energy, 
+auto AeffDC1::value(double energy, 
                       const astro::SkyDir &srcDir, 
                       const astro::SkyDir &scZAxis,
                       const astro::SkyDir &,
-                      double time) const {
+                      double time) const -> double {
 // Inclination wrt spacecraft z-axis in radians.
    double theta = srcDir.difference(scZAxis);
    theta *= 180./M_PI;
    return value(energy, theta, 0., time);
 }
 
-double AeffDC1::value(double energy, double theta, double phi, 
-                      double time) const {
+auto AeffDC1::value(double energy, double theta, double phi, 
+                      double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -93,11 +93,11 @@ double AeffDC1::value(double energy, double theta, double phi,
    return my_value;
 }
 
-double AeffDC1::upperLimit() const {
+auto AeffDC1::upperLimit() const -> double {
    return m_aeffMax;
 }
    
-int AeffDC1::getAeffIndex(double energy, double theta) const {
+auto AeffDC1::getAeffIndex(double energy, double theta) const -> int {
 // Find the location of energy and inclination in grid boundary
 // arrays.
    int ien, ith;

@@ -19,7 +19,7 @@ using CLHEP::RandGauss;
 #include "Edisp.h"
 
 namespace {
-   double erfcc(double x) {
+   auto erfcc(double x) -> double {
 /* (C) Copr. 1986-92 Numerical Recipes Software 0@.1Y.. */
       double t, z, ans;
       
@@ -34,12 +34,12 @@ namespace {
 
 namespace testResponse {
 
-double Edisp::value(double appEnergy,
+auto Edisp::value(double appEnergy,
                     double energy, 
                     const astro::SkyDir &srcDir,
                     const astro::SkyDir &scZAxis,
                     const astro::SkyDir &,
-                    double time) const {
+                    double time) const -> double {
 // Inclination wrt spacecraft z-axis in degrees.
    double theta = srcDir.difference(scZAxis)*180./M_PI;
 
@@ -48,8 +48,8 @@ double Edisp::value(double appEnergy,
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double Edisp::value(double appEnergy, double energy,
-                    double theta, double phi, double time) const {
+auto Edisp::value(double appEnergy, double energy,
+                    double theta, double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -68,11 +68,11 @@ double Edisp::value(double appEnergy, double energy,
    return my_value;
 }
 
-double Edisp::appEnergy(double energy,
+auto Edisp::appEnergy(double energy,
                         const astro::SkyDir &,
                         const astro::SkyDir &,
                         const astro::SkyDir &,
-                        double time) const {
+                        double time) const -> double {
    (void)(time);
 
    double xi = RandGauss::shoot();
@@ -85,11 +85,11 @@ double Edisp::appEnergy(double energy,
    return my_energy;
 }
 
-double Edisp::integral(double emin, double emax, double energy,
+auto Edisp::integral(double emin, double emax, double energy,
                        const astro::SkyDir &srcDir, 
                        const astro::SkyDir &scZAxis,
                        const astro::SkyDir &scXAxis,
-                       double time) const {
+                       double time) const -> double {
    (void)(scXAxis);
    (void)(time);
    double phi(0);
@@ -97,8 +97,8 @@ double Edisp::integral(double emin, double emax, double energy,
    return integral(emin, emax, energy, theta, phi);
 }
    
-double Edisp::integral(double emin, double emax, double energy, 
-                       double theta, double phi, double time) const {
+auto Edisp::integral(double emin, double emax, double energy, 
+                       double theta, double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
    if (theta < 0) {

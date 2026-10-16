@@ -18,7 +18,7 @@
 #include "latResponse/PsfBase.h"
 
 namespace {
-   double sqr(double x) { 
+   auto sqr(double x) -> double { 
       return x*x;
    }
 }
@@ -37,7 +37,7 @@ PsfBase::PsfBase(const PsfBase & other) : irfInterface::IPsf(other),
                                           m_index(other.m_index),
                                           m_psf_pars(other.m_psf_pars) {}
 
-PsfBase & PsfBase::operator=(const PsfBase & rhs) {
+auto PsfBase::operator=(const PsfBase & rhs) -> PsfBase & {
    if (this != &rhs) {
       irfInterface::IPsf::operator=(rhs);
       m_par0 = rhs.m_par0;
@@ -48,12 +48,12 @@ PsfBase & PsfBase::operator=(const PsfBase & rhs) {
    return *this;
 }
 
-double PsfBase::scaleFactor(double energy) const {
+auto PsfBase::scaleFactor(double energy) const -> double {
    double tt(std::pow(energy/100., m_index));
    return std::sqrt(::sqr(m_par0*tt) + ::sqr(m_par1));
 }
 
-double PsfBase::scaleFactor(double energy, bool isFront) const {
+auto PsfBase::scaleFactor(double energy, bool isFront) const -> double {
    /// For Pass 8 event_types, only one set of scaling parameters is
    /// passed in array of size 3, so the isFront parameter is not
    /// used.

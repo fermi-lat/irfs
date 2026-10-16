@@ -15,12 +15,12 @@
 Edisp::Edisp(double resolution) 
    : irfInterface::IEdisp(), m_resolution(resolution) {}
 
-double Edisp::value(double appEnergy,
+auto Edisp::value(double appEnergy,
                     double energy, 
                     const astro::SkyDir & srcDir, 
                     const astro::SkyDir & scZAxis,
                     const astro::SkyDir & scXAxis, 
-                    double time) const {
+                    double time) const -> double {
    (void)(scXAxis);
    static double phi(0);
 
@@ -29,8 +29,8 @@ double Edisp::value(double appEnergy,
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double Edisp::value(double appEnergy, double energy, double theta, 
-                    double phi, double time) const {
+auto Edisp::value(double appEnergy, double energy, double theta, 
+                    double phi, double time) const -> double {
    (void)(theta);
    (void)(phi);
    (void)(time);

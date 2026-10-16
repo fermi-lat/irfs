@@ -32,10 +32,10 @@ namespace {
 
 namespace irfInterface {
 
-std::vector<double> IEdisp::value(const std::vector<double>& appEnergy,
+auto IEdisp::value(const std::vector<double>& appEnergy,
 				  const std::vector<double>& energy,
 				  const std::vector<double>& theta,
-				  double phi, double time) const {
+				  double phi, double time) const -> std::vector<double> {
   if(appEnergy.size() != energy.size() || appEnergy.size() != theta.size())
     throw std::runtime_error("Input arrays must have same dimension.");
 
@@ -52,11 +52,11 @@ std::vector<double> IEdisp::value(const std::vector<double>& appEnergy,
   return vals;
 }
 
-double IEdisp::appEnergy(double energy,
+auto IEdisp::appEnergy(double energy,
                          const astro::SkyDir & srcDir,
                          const astro::SkyDir & scZAxis,
                          const astro::SkyDir & scXAxis,
-                         double time) const {
+                         double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
@@ -92,10 +92,10 @@ double IEdisp::appEnergy(double energy,
    return appEnergy;
 }
 
-double IEdisp::integral(double emin, double emax, double energy,
+auto IEdisp::integral(double emin, double emax, double energy,
                         const astro::SkyDir & srcDir,
                         const astro::SkyDir & scZAxis,
-                        const astro::SkyDir & scXAxis, double time) const {
+                        const astro::SkyDir & scXAxis, double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
@@ -103,8 +103,8 @@ double IEdisp::integral(double emin, double emax, double energy,
    return adhocIntegrator(func, emin, emax);
 }
 
-double IEdisp::integral(double emin, double emax, double energy,
-                        double theta, double phi, double time) const {
+auto IEdisp::integral(double emin, double emax, double energy,
+                        double theta, double phi, double time) const -> double {
    EdispIntegrand func(*this, energy, theta, phi, time);
    double value(0);
    try {
@@ -119,19 +119,19 @@ double IEdisp::integral(double emin, double emax, double energy,
    return value;
 }
 
-double IEdisp::meanAppEnergy(double energy,
+auto IEdisp::meanAppEnergy(double energy,
                              const astro::SkyDir & srcDir, 
                              const astro::SkyDir & scZAxis,
                              const astro::SkyDir & scXAxis,
-                             double time) const {
+                             double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    static double phi(0);
    return meanAppEnergy(energy, theta, phi, time);
 }
 
-double IEdisp::meanAppEnergy(double energy, double theta, double phi,
-                             double time) const {
+auto IEdisp::meanAppEnergy(double energy, double theta, double phi,
+                             double time) const -> double {
    double integral;
    double emin(0);
    double emax(energy*10.);
@@ -152,19 +152,19 @@ double IEdisp::meanAppEnergy(double energy, double theta, double phi,
    return integral/normalization;
 }
 
-double IEdisp::meanTrueEnergy(double appEnergy,
+auto IEdisp::meanTrueEnergy(double appEnergy,
                               const astro::SkyDir & srcDir, 
                               const astro::SkyDir & scZAxis,
                               const astro::SkyDir & scXAxis,
-                              double time) const {
+                              double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    static double phi(0);
    return meanTrueEnergy(appEnergy, theta, phi, time);
 }
 
-double IEdisp::meanTrueEnergy(double appEnergy, double theta, double phi,
-                              double time) const {
+auto IEdisp::meanTrueEnergy(double appEnergy, double theta, double phi,
+                              double time) const -> double {
    double integral;
 //   double emin(0);
    double emin(30);
@@ -185,8 +185,8 @@ double IEdisp::meanTrueEnergy(double appEnergy, double theta, double phi,
    return integral/normalization;
 }
 
-double IEdisp::adhocIntegrator(const EdispIntegrand & func, 
-                               double emin, double emax) const {
+auto IEdisp::adhocIntegrator(const EdispIntegrand & func, 
+                               double emin, double emax) const -> double {
    double err(1e-7);
    double integral(0);
    try {
@@ -209,8 +209,8 @@ double IEdisp::adhocIntegrator(const EdispIntegrand & func,
    return integral;
 }
 
-double IEdisp::accuracyKluge(const EdispIntegrand & func,
-                             double emin, double emax, double err) const {
+auto IEdisp::accuracyKluge(const EdispIntegrand & func,
+                             double emin, double emax, double err) const -> double {
 // kluge to deal with integrations deemed not to be sufficiently accurate
    double integral;
    int ier;

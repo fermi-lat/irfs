@@ -21,7 +21,7 @@ namespace {
    public:
       TwoLinear(double a, double b, double x0, double y0) 
          : m_a(a), m_b(b), m_x0(x0), m_y0(y0) {}
-      double operator()(double x) const {
+      auto operator()(double x) const -> double {
          double value;
          if (x < m_x0) {
             value = m_a*(x - m_x0) + m_y0;
@@ -36,7 +36,7 @@ namespace {
    private:
       double m_a, m_b, m_x0, m_y0;
    };
-   double profile(double mu) {
+   auto profile(double mu) -> double {
       static double a(0.32), b(0.8), c(0.18);
       if (mu > b) {
          return (mu + a)/(1. + a);
@@ -50,18 +50,18 @@ namespace {
 
 namespace dc1aResponse {
 
-double Aeff::value(double energy, 
+auto Aeff::value(double energy, 
                    const astro::SkyDir &srcDir, 
                    const astro::SkyDir &scZAxis,
                    const astro::SkyDir &scXAxis,
-                   double time) const {
+                   double time) const -> double {
    (void)(scXAxis);
    double theta = srcDir.difference(scZAxis)*180./M_PI;
    return value(energy, theta, 0, time);
 }
 
-double Aeff::value(double energy, double theta, double phi,
-                   double time) const {
+auto Aeff::value(double energy, double theta, double phi,
+                   double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -94,7 +94,7 @@ double Aeff::value(double energy, double theta, double phi,
    }
 }
 
-double Aeff::upperLimit() const {
+auto Aeff::upperLimit() const -> double {
    return m_params.at(0);
 }
 

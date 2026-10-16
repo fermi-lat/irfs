@@ -18,7 +18,7 @@
 #include "PsfScaling.h"
 
 namespace {
-   double sqr(double x) {
+   auto sqr(double x) -> double {
       return x*x;
    }
 
@@ -92,7 +92,7 @@ PsfScaling::PsfScaling(const std::string & psfFile) {
    fitsReportError(status, "PsfScaling::PsfScaling");
 }
 
-double PsfScaling::operator()(double McEnergy, double McZDir) const {
+auto PsfScaling::operator()(double McEnergy, double McZDir) const -> double {
    double t(powerLawScaling(McEnergy));
    double x(trendline(McEnergy));
    double scaleFactor(1.);
@@ -108,15 +108,15 @@ double PsfScaling::operator()(double McEnergy, double McZDir) const {
    return scaleFactor*180./M_PI;
 }
 
-double PsfScaling::powerLawScaling(double McEnergy) const {
+auto PsfScaling::powerLawScaling(double McEnergy) const -> double {
    return std::pow(McEnergy/100., m_pars[0]);
 }
 
-double PsfScaling::zfactor(double McZDir) const {
+auto PsfScaling::zfactor(double McZDir) const -> double {
    return 1. + m_pars[1]*(1. - std::fabs(McZDir));
 }
 
-double PsfScaling::trendline(double McEnergy) const {
+auto PsfScaling::trendline(double McEnergy) const -> double {
    return m_pars[2]*std::log10(McEnergy/100.) + m_pars[3];
 }
 

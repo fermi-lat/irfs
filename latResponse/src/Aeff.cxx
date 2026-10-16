@@ -62,7 +62,7 @@ Aeff::Aeff(const Aeff & other)
    }
 }
 
-Aeff & Aeff::operator=(const Aeff & rhs) {
+auto Aeff::operator=(const Aeff & rhs) -> Aeff & {
    if (this != &rhs) {
       irfInterface::IAeff::operator=(rhs);
       m_aeffTable = rhs.m_aeffTable;
@@ -79,11 +79,11 @@ Aeff::~Aeff() {
    delete m_phiDepPars;
 }
 
-double Aeff::value(double energy, 
+auto Aeff::value(double energy, 
                    const astro::SkyDir & srcDir, 
                    const astro::SkyDir & scZAxis,
                    const astro::SkyDir & scXAxis,
-                   double time) const {
+                   double time) const -> double {
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    CLHEP::Hep3Vector yhat(scZAxis().cross(scXAxis()));
    double phi = 180./M_PI*std::atan2(yhat.dot(srcDir()), 
@@ -91,8 +91,8 @@ double Aeff::value(double energy,
    return value(energy, theta, phi, time);
 }
 
-double Aeff::value(double energy, double theta, double phi,
-                   double time) const {
+auto Aeff::value(double energy, double theta, double phi,
+                   double time) const -> double {
    (void)(time);
    double costheta(std::cos(theta*M_PI/180.));
    if (costheta < m_aeffTable.minCosTheta()) {
@@ -108,7 +108,7 @@ double Aeff::value(double energy, double theta, double phi,
    return aeff_value*phi_mod;
 }
 
-double Aeff::phi_modulation(double par0, double par1, double phi) const {
+auto Aeff::phi_modulation(double par0, double par1, double phi) const -> double {
    if (phi < 0) {
       phi += 360.;
    }
@@ -118,8 +118,8 @@ double Aeff::phi_modulation(double par0, double par1, double phi) const {
    return norm*(1. + par0*std::pow(xx, par1));
 }
 
-double Aeff::phi_modulation(double logE, double costheta, 
-                            double phi, bool interpolate) const {
+auto Aeff::phi_modulation(double logE, double costheta, 
+                            double phi, bool interpolate) const -> double {
    double par[2];
    if (!m_phiDepPars || !m_usePhiDependence) {
       return 1.;
@@ -128,7 +128,7 @@ double Aeff::phi_modulation(double logE, double costheta,
    return phi_modulation(par[0], par[1], phi);
 }
 
-double Aeff::max_phi_modulation() const {
+auto Aeff::max_phi_modulation() const -> double {
    if (!m_phiDepPars || !m_usePhiDependence) {
       return 1.;
    }
@@ -152,8 +152,8 @@ double Aeff::max_phi_modulation() const {
    return max_mod;
 }
 
-std::pair<double, double> 
-Aeff::pars(double logE, double costh, bool interpolate) const {
+auto 
+Aeff::pars(double logE, double costh, bool interpolate) const -> std::pair<double, double> {
    if (!m_phiDepPars || !m_usePhiDependence) {
       return std::make_pair(1., 0);
    }
@@ -162,7 +162,7 @@ Aeff::pars(double logE, double costh, bool interpolate) const {
    return std::make_pair(par[0], par[1]);
 }
 
-double Aeff::upperLimit() const {
+auto Aeff::upperLimit() const -> double {
    return m_aeffTable.maximum()*1e4*max_phi_modulation();
 }
 

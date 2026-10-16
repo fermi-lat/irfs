@@ -115,7 +115,7 @@ void EfficiencyFactor::readFitsFile(const std::string & fitsfile,
    delete table;
 }
 
-double EfficiencyFactor::operator()(double energy, double met) const {
+auto EfficiencyFactor::operator()(double energy, double met) const -> double {
    if (!m_havePars || m_start.empty()) {
       return 1;
    }
@@ -146,8 +146,8 @@ double EfficiencyFactor::operator()(double energy, double met) const {
    return value;
 }
 
-double EfficiencyFactor::value(double energy, double livetimefrac,
-                               bool front, double met) const {
+auto EfficiencyFactor::value(double energy, double livetimefrac,
+                               bool front, double met) const -> double {
    /// front is no longer used with more general event_types in Pass 8
    /// but we retain it to keep the interface backwards-compatible.
    (void)(front);  

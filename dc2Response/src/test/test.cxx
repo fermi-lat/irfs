@@ -37,7 +37,7 @@ void checkPsf(irfInterface::Irfs * irf, float energy, float theta, float phi) {
    std::cout<<"Integral from 0 to 50 degrees : "<<Integral<<std::endl;
 }
 
-int main(int argc, char* argv[]) {
+auto main(int argc, char* argv[]) -> int {
    st_facilities::Environment::instance();
    if (!std::getenv("CALDB")) {
       std::cout << "CALDB not set, exiting." << std::endl;

@@ -1,0 +1,18 @@
+/******************************************************************************
+ *   File name: HDgtcalf_standalone.c                                         *
+ *                                                                            *
+ * Description: Definitions necessary for HDgtcalf to be used outside         *
+ *     the context of Headas.                                                 *
+ *                                                                            *
+ *      Author: James Peachey, L3 Communications, for HEASARC/GSFC/NASA       *
+ *                                                                            *
+ *****************************************************************************/
+#include "HDgtcalf_standalone.h"
+
+#include <stdio.h>
+
+/* No-op replacement for HDerror_throw. */
+auto HDgtcalf_error_throw(const char * msg, int status) -> int { 
+   printf("%s\n", msg);
+   return status; 
+}

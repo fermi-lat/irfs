@@ -75,7 +75,7 @@ void irfLoaderTests::access_missing_irfs() {
    Loader::go("DEV");
 }
    
-int main() {
+auto main() -> int {
    CppUnit::TextTestRunner runner;
    
    runner.addTest(irfLoaderTests::suite());

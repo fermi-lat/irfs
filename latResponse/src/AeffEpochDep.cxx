@@ -25,7 +25,7 @@ AeffEpochDep::AeffEpochDep(const AeffEpochDep & other)
    }
 }
 
-AeffEpochDep & AeffEpochDep::operator=(const AeffEpochDep & rhs) {
+auto AeffEpochDep::operator=(const AeffEpochDep & rhs) -> AeffEpochDep & {
    if (this != &rhs) {
       irfInterface::IAeff::operator=(rhs);
       EpochDep::operator=(rhs);
@@ -47,22 +47,22 @@ AeffEpochDep::~AeffEpochDep() {
    }
 }
 
-double AeffEpochDep::value(double energy,
+auto AeffEpochDep::value(double energy,
                            const astro::SkyDir & srcDir,
                            const astro::SkyDir & scZDir,
                            const astro::SkyDir & scXDir,
-                           double time) const {
+                           double time) const -> double {
    size_t indx(index(time));
    return m_aeffs[indx]->value(energy, srcDir, scZDir, scXDir, time);
 }
 
-double AeffEpochDep::value(double energy, double theta, double phi, 
-                           double time) const {
+auto AeffEpochDep::value(double energy, double theta, double phi, 
+                           double time) const -> double {
    size_t indx(index(time));
    return m_aeffs[indx]->value(energy, theta, phi, time);
 }
 
-double AeffEpochDep::upperLimit() const {
+auto AeffEpochDep::upperLimit() const -> double {
    return m_upperLimit;
 }
 

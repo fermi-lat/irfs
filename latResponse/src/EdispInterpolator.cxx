@@ -21,14 +21,14 @@
 #include "latResponse/EdispInterpolator.h"
 
 namespace {
-   double sqr(double x) {
+   auto sqr(double x) -> double {
       return x*x;
    }
    class Array {
    public:
       Array(const std::vector<double> & values, size_t nx) 
          : m_values(values), m_nx(nx) {}
-      double operator()(size_t iy, size_t ix) const {
+      auto operator()(size_t iy, size_t ix) const -> double {
          return m_values[iy*m_nx + ix];
       }
    private:
@@ -201,7 +201,7 @@ void EdispInterpolator::getCornerPars(double energy, double theta,
    indx[3] = xsize*(j) + (i-1);
 }
 
-int EdispInterpolator::findIndex(const std::vector<double> & xx, double x) {
+auto EdispInterpolator::findIndex(const std::vector<double> & xx, double x) -> int {
    typedef std::vector<double>::const_iterator const_iterator_t;
 
    const_iterator_t ix(std::upper_bound(xx.begin(), xx.end(), x));
@@ -220,7 +220,7 @@ int EdispInterpolator::findIndex(const std::vector<double> & xx, double x) {
    return i;
 }
 
-std::vector<double> EdispInterpolator::params(size_t indx) const { 
+auto EdispInterpolator::params(size_t indx) const -> std::vector<double> { 
 
   if(indx >= m_parVectors[0].size())
     throw std::runtime_error("Parameter index out of range.");

@@ -20,7 +20,7 @@ using CLHEP::RandGauss;
 #include "EdispDC1.h"
 
 namespace {
-   double erfcc(double x) {
+   auto erfcc(double x) -> double {
 /* (C) Copr. 1986-92 Numerical Recipes Software 0@.1Y.. */
       double t, z, ans;
       
@@ -44,12 +44,12 @@ EdispDC1::EdispDC1(const std::string &filename, int hdu, int npars)
    normalizeDists();
 }
 
-double EdispDC1::value(double appEnergy,
+auto EdispDC1::value(double appEnergy,
                        double energy, 
                        const astro::SkyDir &srcDir,
                        const astro::SkyDir &scZAxis,
                        const astro::SkyDir &, 
-                       double time) const {
+                       double time) const -> double {
 // Inclination wrt spacecraft z-axis in degrees.
    double theta = srcDir.difference(scZAxis)*180./M_PI;
 
@@ -59,8 +59,8 @@ double EdispDC1::value(double appEnergy,
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double EdispDC1::value(double appEnergy, double energy,
-                       double theta, double phi, double time) const {
+auto EdispDC1::value(double appEnergy, double energy,
+                       double theta, double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -82,11 +82,11 @@ double EdispDC1::value(double appEnergy, double energy,
    return 0;
 }
 
-double EdispDC1::appEnergy(double energy,
+auto EdispDC1::appEnergy(double energy,
                            const astro::SkyDir &srcDir,
                            const astro::SkyDir &scZAxis,
                            const astro::SkyDir &, 
-                           double time) const {
+                           double time) const -> double {
    (void)(time);
 // Inclination wrt spacecraft z-axis in degrees.
    double inc = srcDir.difference(scZAxis)*180./M_PI;
@@ -102,11 +102,11 @@ double EdispDC1::appEnergy(double energy,
    return my_energy;
 }
 
-double EdispDC1::integral(double emin, double emax, double energy,
+auto EdispDC1::integral(double emin, double emax, double energy,
                           const astro::SkyDir &srcDir, 
                           const astro::SkyDir &scZAxis,
                           const astro::SkyDir &scXAxis, 
-                          double time) const {
+                          double time) const -> double {
    (void)(scXAxis);
    (void)(time);
    double phi(0);
@@ -114,8 +114,8 @@ double EdispDC1::integral(double emin, double emax, double energy,
    return integral(emin, emax, energy, theta, phi);
 }
    
-double EdispDC1::integral(double emin, double emax, double energy, 
-                          double theta, double phi, double time) const {
+auto EdispDC1::integral(double emin, double emax, double energy, 
+                          double theta, double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
    if (theta < 0) {

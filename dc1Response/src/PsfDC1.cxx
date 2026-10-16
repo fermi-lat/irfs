@@ -69,12 +69,12 @@ PsfDC1::PsfDC1(const PsfDC1 &rhs) : IPsf(rhs), DC1(rhs) {
    }
 }
 
-double PsfDC1::value(const astro::SkyDir &appDir, 
+auto PsfDC1::value(const astro::SkyDir &appDir, 
                      double energy, 
                      const astro::SkyDir &srcDir, 
                      const astro::SkyDir &scZAxis,
                      const astro::SkyDir &,
-                     double time) const {
+                     double time) const -> double {
    
 // Angle between photon and source directions in radians.
    double separation = appDir.difference(srcDir);
@@ -88,11 +88,11 @@ double PsfDC1::value(const astro::SkyDir &appDir,
    return 0;
 }
 
-astro::SkyDir PsfDC1::appDir(double energy,
+auto PsfDC1::appDir(double energy,
                              const astro::SkyDir &srcDir,
                              const astro::SkyDir &scZAxis,
                              const astro::SkyDir &,
-                             double time) const {
+                             double time) const -> astro::SkyDir {
    
    (void)(time);
    double inclination = srcDir.difference(scZAxis)*180./M_PI;
@@ -125,8 +125,8 @@ astro::SkyDir PsfDC1::appDir(double energy,
    return appDir;
 }
 
-double PsfDC1::value(double separation, double energy, double theta,
-                     double phi, double time) const {
+auto PsfDC1::value(double separation, double energy, double theta,
+                     double phi, double time) const -> double {
    if (theta < 0) {
       std::ostringstream message;
       message << "dc1Response::PsfDC1::value(...):\n"
@@ -139,7 +139,7 @@ double PsfDC1::value(double separation, double energy, double theta,
    return value(separation*M_PI/180., energy, theta);
 }
 
-double PsfDC1::value(double separation, double energy, double inc) const {
+auto PsfDC1::value(double separation, double energy, double inc) const -> double {
 
    std::vector<double> pars = fitParams(energy, inc);
 
@@ -155,7 +155,7 @@ double PsfDC1::value(double separation, double energy, double inc) const {
    return value(0, pars)/2./M_PI;
 }
 
-double PsfDC1::value(double scaledAngle, std::vector<double> &pars) const {
+auto PsfDC1::value(double scaledAngle, std::vector<double> &pars) const -> double {
    double x(scaledAngle);
 // This is the phenomenological parametrization used by Claudia.
    assert(pars.size() == 5);
@@ -191,7 +191,7 @@ void PsfDC1::readEnergyScaling() {
    }
 }
 
-double PsfDC1::energyScaling(double energy) const {
+auto PsfDC1::energyScaling(double energy) const -> double {
    std::vector<double>::const_iterator enIt 
       = find_iterator(m_scaleEnergy, energy);
    int indx = enIt - m_scaleEnergy.begin();
@@ -241,23 +241,23 @@ void PsfDC1::computeCumulativeDists() {
    }
 }   
 
-double 
+auto 
 PsfDC1::angularIntegral(double energy,
                         const astro::SkyDir &srcDir,
                         const astro::SkyDir &scZAxis,
                         const astro::SkyDir &,
                         const std::vector<irfInterface::AcceptanceCone *> 
-                        &acceptanceCones, double time) {
+                        &acceptanceCones, double time) -> double {
    double theta = srcDir.difference(scZAxis)*180./M_PI;
    static double phi;
    return angularIntegral(energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double
+auto
 PsfDC1::angularIntegral(double energy, const astro::SkyDir & srcDir,
                         double theta, double phi, 
                         const std::vector<irfInterface::AcceptanceCone *> 
-                        &acceptanceCones, double time) {
+                        &acceptanceCones, double time) -> double {
    (void)(phi);
    (void)(time);
    if (!m_acceptanceCone || *m_acceptanceCone != *(acceptanceCones[0])) {
@@ -280,8 +280,8 @@ PsfDC1::angularIntegral(double energy, const astro::SkyDir & srcDir,
    return m_angularIntegrals[ipar][indx];
 }
 
-double PsfDC1::angularIntegral(double energy, double theta, 
-                               double phi, double radius, double time) const {
+auto PsfDC1::angularIntegral(double energy, double theta, 
+                               double phi, double radius, double time) const -> double {
    (void)(phi);
    (void)(time);
    int ipar = getParamsIndex(energy, theta);
@@ -397,7 +397,7 @@ void PsfDC1::performIntegral(int ipar, int ipsi, int jen) {
    }
 }
 
-double PsfDC1::Gint::value(double mu) const {
+auto PsfDC1::Gint::value(double mu) const -> double {
    double eScale = m_psfObj->energyScaling(m_energy);
    double x = acos(mu)/eScale;
 

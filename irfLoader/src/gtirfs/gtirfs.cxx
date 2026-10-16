@@ -53,7 +53,7 @@ private:
 
    st_app::AppParGroup & m_pars;
 
-   std::string par(const std::string & key) const;
+   auto par(const std::string & key) const -> std::string;
 
    std::vector<irfInterface::Irfs *> m_irfs;
 
@@ -72,7 +72,7 @@ void PrintIrfs::banner() const {
    }
 }
 
-std::string PrintIrfs::par(const std::string & key) const {
+auto PrintIrfs::par(const std::string & key) const -> std::string {
    std::string value = m_pars[key.c_str()];
    return value;
 }

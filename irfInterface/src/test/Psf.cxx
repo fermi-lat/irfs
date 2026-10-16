@@ -14,12 +14,12 @@ Psf::Psf(double maxSep) : irfInterface::IPsf(), m_maxSep(maxSep) {
    m_value = 1./2./M_PI/(1. - std::cos(m_maxSep*M_PI/180.));
 }
 
-double Psf::value(const astro::SkyDir & appDir,
+auto Psf::value(const astro::SkyDir & appDir,
                   double energy,
                   const astro::SkyDir & srcDir,
                   const astro::SkyDir & scZAxis,
                   const astro::SkyDir & scXAxis,
-                  double time) const {
+                  double time) const -> double {
    (void)(energy);
    (void)(scZAxis);
    (void)(scXAxis);
@@ -31,8 +31,8 @@ double Psf::value(const astro::SkyDir & appDir,
    return 0;
 }
 
-double Psf::value(double sep, double energy, double theta, double phi, 
-                  double time) const {
+auto Psf::value(double sep, double energy, double theta, double phi, 
+                  double time) const -> double {
    (void)(energy);
    (void)(theta);
    (void)(phi);

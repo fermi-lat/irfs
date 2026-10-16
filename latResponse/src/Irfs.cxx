@@ -29,7 +29,7 @@ Irfs::Irfs(const Irfs & other)
      m_eventType(other.m_eventType) {
 }
 
-irfInterface::IAeff * Irfs::aeff() {
+auto Irfs::aeff() -> irfInterface::IAeff * {
    if (irfInterface::Irfs::aeff() == 0) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::aeff(m_irfName, m_eventType));
       setAeff(IrfLoader::aeff(hdus));
@@ -37,7 +37,7 @@ irfInterface::IAeff * Irfs::aeff() {
    return irfInterface::Irfs::aeff();
 }
 
-const irfInterface::IEfficiencyFactor * Irfs::efficiencyFactor() const {
+auto Irfs::efficiencyFactor() const -> const irfInterface::IEfficiencyFactor * {
    if (irfInterface::Irfs::efficiencyFactor() == 0) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::aeff(m_irfName, m_eventType));
       irfInterface::IEfficiencyFactor * eff(IrfLoader::efficiency_factor(hdus));
@@ -49,7 +49,7 @@ const irfInterface::IEfficiencyFactor * Irfs::efficiencyFactor() const {
    return irfInterface::Irfs::efficiencyFactor();
 }
 
-irfInterface::IPsf * Irfs::psf() {
+auto Irfs::psf() -> irfInterface::IPsf * {
    if (irfInterface::Irfs::psf() == 0) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::psf(m_irfName, m_eventType));
       setPsf(IrfLoader::psf(hdus));
@@ -57,7 +57,7 @@ irfInterface::IPsf * Irfs::psf() {
    return irfInterface::Irfs::psf();
 }
 
-irfInterface::IEdisp * Irfs::edisp() {
+auto Irfs::edisp() -> irfInterface::IEdisp * {
    if (irfInterface::Irfs::edisp() == 0) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::edisp(m_irfName, m_eventType));
       setEdisp(IrfLoader::edisp(hdus));

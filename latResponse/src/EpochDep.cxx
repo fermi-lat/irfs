@@ -25,8 +25,8 @@ namespace latResponse {
 EpochDep::EpochDep() : m_curr_index(0) {
 }
 
-double EpochDep::epochStart(const std::string & fitsfile,
-                            const std::string & extname) {
+auto EpochDep::epochStart(const std::string & fitsfile,
+                            const std::string & extname) -> double {
    const tip::Table * table 
       = tip::IFileSvc::instance().readTable(fitsfile, extname);
    const tip::Header & header(table->getHeader());
@@ -55,7 +55,7 @@ void EpochDep::appendEpoch(double epoch_start) {
    m_epochStart.push_back(epoch_start);
 }
 
-size_t EpochDep::index(double met) const {
+auto EpochDep::index(double met) const -> size_t {
    if ( (met >= m_epochStart[m_curr_index] && 
          m_curr_index == m_epochStart.size()-1) ||
         (met >= m_epochStart[m_curr_index] && 

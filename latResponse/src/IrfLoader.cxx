@@ -146,8 +146,8 @@ void IrfLoader::addIrfs(const std::string & irf_name,
    myFactory->addIrfs(irf_name + "::" + event_type, irfs);
 }
 
-irfInterface::IAeff * 
-IrfLoader::aeff(const irfUtil::IrfHdus & aeff_hdus) {
+auto 
+IrfLoader::aeff(const irfUtil::IrfHdus & aeff_hdus) -> irfInterface::IAeff * {
    if (aeff_hdus.numEpochs() == 1) {
       return new Aeff(aeff_hdus, 0);
    } else {
@@ -166,8 +166,8 @@ IrfLoader::aeff(const irfUtil::IrfHdus & aeff_hdus) {
    return 0;
 }
 
-irfInterface::IPsf * 
-IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus) {
+auto 
+IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus) -> irfInterface::IPsf * {
    if (psf_hdus.numEpochs() == 1) {
       return psf(psf_hdus, 0);
    } else {
@@ -186,8 +186,8 @@ IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus) {
    return 0;
 }
 
-irfInterface::IPsf * IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus, 
-                                    size_t iepoch) {
+auto IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus, 
+                                    size_t iepoch) -> irfInterface::IPsf * {
    // Return the single epoch Psf.
    const std::vector<std::pair<std::string, std::string> > &
       filename_hdu_pairs(psf_hdus("RPSF"));
@@ -209,8 +209,8 @@ irfInterface::IPsf * IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus,
    return 0;
 }
 
-irfInterface::IEdisp * 
-IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus) {
+auto 
+IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus) -> irfInterface::IEdisp * {
    if (edisp_hdus.numEpochs() == 1) {
       return edisp(edisp_hdus, 0);
    } else {
@@ -229,8 +229,8 @@ IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus) {
    return 0;
 }
 
-irfInterface::IEdisp * 
-IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus, size_t iepoch) {
+auto 
+IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus, size_t iepoch) -> irfInterface::IEdisp * {
    const std::vector<std::pair<std::string, std::string> > &
       filename_hdu_pairs(edisp_hdus("EDISP"));
    const std::string & edisp_file(filename_hdu_pairs[iepoch].first);
@@ -251,8 +251,8 @@ IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus, size_t iepoch) {
    return 0;
 }
 
-irfInterface::IEfficiencyFactor *
-IrfLoader::efficiency_factor(const irfUtil::IrfHdus & aeff_hdus) {
+auto
+IrfLoader::efficiency_factor(const irfUtil::IrfHdus & aeff_hdus) -> irfInterface::IEfficiencyFactor * {
    irfInterface::IEfficiencyFactor * my_eff(0);
    if (aeff_hdus.numEpochs() == 1) {
       my_eff = new EfficiencyFactor(aeff_hdus, 0);
@@ -384,8 +384,8 @@ void IrfLoader::find_cif(std::string & caldb_indx) const {
    throw std::runtime_error("GLAST LAT not found in caldb.config file");
 }
 
-int IrfLoader::edispVersion(const std::string & fitsfile, 
-                            const std::string & extname) {
+auto IrfLoader::edispVersion(const std::string & fitsfile, 
+                            const std::string & extname) -> int {
    const tip::Table * table = 
       tip::IFileSvc::instance().readTable(fitsfile, extname);
    int version(1);
@@ -398,8 +398,8 @@ int IrfLoader::edispVersion(const std::string & fitsfile,
    return version;
 }
 
-int IrfLoader::psfVersion(const std::string & fitsfile, 
-                          const std::string & extname) {
+auto IrfLoader::psfVersion(const std::string & fitsfile, 
+                          const std::string & extname) -> int {
    const tip::Table * table = 
       tip::IFileSvc::instance().readTable(fitsfile, extname);
    int version(1);

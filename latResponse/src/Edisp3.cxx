@@ -26,7 +26,7 @@
 #include "latResponse/Edisp3.h"
 
 namespace {
-   double gammln(double x){
+   auto gammln(double x) -> double{
       double tmp, sum;
       static double cof[6] =
          {76.18009173, -86.50532033, 24.01409822,
@@ -71,21 +71,21 @@ Edisp3::~Edisp3() {
    delete m_interpolator;
 }
 
-double Edisp3::value(double appEnergy,
+auto Edisp3::value(double appEnergy,
                      double energy, 
                      const astro::SkyDir & srcDir,
                      const astro::SkyDir & scZAxis,
                      const astro::SkyDir & scXAxis, 
-                     double time) const {
+                     double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double Edisp3::evaluate(double emeas, double energy,
+auto Edisp3::evaluate(double emeas, double energy,
                         double theta, double phi, double time,
-                        double * pars) const {
+                        double * pars) const -> double {
    (void)(phi);
    (void)(time);
    double xx((emeas - energy)/energy);
@@ -96,8 +96,8 @@ double Edisp3::evaluate(double emeas, double energy,
    return thibaut_function(xx, pars)/energy/scale_factor;
 }
 
-double Edisp3::value(double appEnergy, double energy,
-                     double theta, double phi, double time) const {
+auto Edisp3::value(double appEnergy, double energy,
+                     double theta, double phi, double time) const -> double {
    if (::getenv("DISABLE_EDISP_INTERP")) {
       double costh(std::cos(theta*M_PI/180.));
       costh = std::min(costh, m_parTables.costhetas().back());
@@ -111,7 +111,7 @@ double Edisp3::value(double appEnergy, double energy,
                                    theta, phi, time);
 }
 
-double Edisp3::thibaut_function(double xx, double * pars) const {
+auto Edisp3::thibaut_function(double xx, double * pars) const -> double {
 // See https://confluence.slac.stanford.edu/x/URDlCQ
 // Parameter ordering in FITS file: F, S1, K1, BIAS, BIAS2, 
 // S2, K2, PINDEX1, PINDEX2
@@ -129,8 +129,8 @@ double Edisp3::thibaut_function(double xx, double * pars) const {
    return value;
 }
 
-double Edisp3::thibaut_base_function(double xx, double sigma, double kk, 
-                                     double bb, double pp) const {
+auto Edisp3::thibaut_base_function(double xx, double sigma, double kk, 
+                                     double bb, double pp) const -> double {
    double uu(xx - bb);
    double uup(0);
    double uum(0);
@@ -150,7 +150,7 @@ double Edisp3::thibaut_base_function(double xx, double sigma, double kk,
    return value;
 }
 
-double Edisp3::scaleFactor(double logE, double costh) const {
+auto Edisp3::scaleFactor(double logE, double costh) const -> double {
 // See handoff_response::Dispersion::scaleFactor
    costh = std::fabs(costh);
    double my_value(m_scalePars.at(0)*logE*logE +
@@ -162,7 +162,7 @@ double Edisp3::scaleFactor(double logE, double costh) const {
    return my_value;
 }
 
-double * Edisp3::pars(double energy, double costh) const {
+auto Edisp3::pars(double energy, double costh) const -> double * {
    double loge(std::log10(energy));
    // if (!IrfLoader::interpolate_edisp()) {
    //    // Ensure use of highest cos(theta) bin.

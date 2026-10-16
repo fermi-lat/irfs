@@ -16,7 +16,7 @@ namespace irfInterface {
 
 IrfRegistry * IrfRegistry::s_instance(0);
 
-IrfRegistry & IrfRegistry::instance() {
+auto IrfRegistry::instance() -> IrfRegistry & {
    if (s_instance == 0) {
       s_instance = new IrfRegistry();
    }
@@ -49,7 +49,7 @@ void IrfRegistry::loadIrfs(const std::string & irfsName) {
    }
 }
 
-std::vector<std::string> IrfRegistry::irfNames() const {
+auto IrfRegistry::irfNames() const -> std::vector<std::string> {
    std::vector<std::string> names;
    std::map<std::string, IrfLoader *>::const_iterator it(m_irfLoaders.begin());
    for ( ; it != m_irfLoaders.end(); ++it) {
@@ -58,8 +58,8 @@ std::vector<std::string> IrfRegistry::irfNames() const {
    return names;
 }
 
-const std::vector<std::string> & 
-IrfRegistry::operator[](const std::string & respName) const {
+auto 
+IrfRegistry::operator[](const std::string & respName) const -> const std::vector<std::string> & {
    std::map<std::string, std::vector<std::string> >::const_iterator it;
    if ((it = m_respIds.find(respName)) == m_respIds.end()) {
       throw std::runtime_error("IrfRegistry: Cannot find response named " 

@@ -23,7 +23,7 @@ void print_hdus(const irfUtil::IrfHdus & my_hdus) {
    }
 }
 
-int main() {
+auto main() -> int {
 //   std::string detname("PSF0");
    std::string detname("EDISP1");
    std::string irfName("P8_SOURCE_V5");

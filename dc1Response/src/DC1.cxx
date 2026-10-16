@@ -98,9 +98,9 @@ void DC1::readFitParams() {
    }
 }
 
-std::vector<double>::const_iterator 
+auto 
 DC1::find_iterator(const std::vector<double> &gridValues, 
-                   double target) const {
+                   double target) const -> std::vector<double>::const_iterator {
    std::vector<double>::const_iterator it;
    if (target < *(gridValues.begin())) {
       it = gridValues.begin();
@@ -116,13 +116,13 @@ DC1::find_iterator(const std::vector<double> &gridValues,
    return it;
 }
 
-const std::vector<double> &DC1::fitParams(double energy, double inc) const {
+auto DC1::fitParams(double energy, double inc) const -> const std::vector<double> & {
    unsigned int indx = getParamsIndex(energy, inc);
    assert(indx < m_pars.size());
    return m_pars[indx];
 }
 
-int DC1::getParamsIndex(double energy, double inc) const {
+auto DC1::getParamsIndex(double energy, double inc) const -> int {
 // Find the location of energy and inclination in grid boundary
 // arrays.
    int ien = find_iterator(m_energy, energy) - m_energy.begin();

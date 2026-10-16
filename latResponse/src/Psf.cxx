@@ -23,7 +23,7 @@
 #include "PsfIntegralCache.h"
 
 namespace {
-   double sqr(double x) {
+   auto sqr(double x) -> double {
       return x*x;
    }
 }
@@ -50,12 +50,12 @@ Psf::~Psf() {
    delete m_integralCache;
 }
 
-double Psf::value(const astro::SkyDir & appDir, 
+auto Psf::value(const astro::SkyDir & appDir, 
                   double energy, 
                   const astro::SkyDir & srcDir, 
                   const astro::SkyDir & scZAxis,
                   const astro::SkyDir & scXAxis, 
-                  double time) const {
+                  double time) const -> double {
    (void)(scXAxis);
    double sep(appDir.difference(srcDir)*180./M_PI);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
@@ -63,16 +63,16 @@ double Psf::value(const astro::SkyDir & appDir,
    return value(sep, energy, theta, phi, time);
 }
 
-double Psf::value(double separation, double energy, double theta,
-                  double phi, double time) const {
+auto Psf::value(double separation, double energy, double theta,
+                  double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
    double * my_pars(pars(energy, std::cos(theta*M_PI/180.)));
    return old_function(separation*M_PI/180., my_pars);
 }
 
-double Psf::angularIntegral(double energy, double theta, 
-                            double phi, double radius, double time) const {
+auto Psf::angularIntegral(double energy, double theta, 
+                            double phi, double radius, double time) const -> double {
    if (energy < 120.) {
       double integral = IPsf::angularIntegral(energy, theta, phi, radius, time);
       return integral;
@@ -81,24 +81,24 @@ double Psf::angularIntegral(double energy, double theta,
    return old_integral(radius*M_PI/180., my_pars)*(2.*M_PI*::sqr(my_pars[1]));
 }
 
-double Psf::angularIntegral(double energy,
+auto Psf::angularIntegral(double energy,
                             const astro::SkyDir & srcDir,
                             const astro::SkyDir & scZAxis,
                             const astro::SkyDir & scXAxis,
                             const AcceptanceConeVector_t & acceptanceCones, 
-                            double time) {
+                            double time) -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
    return angularIntegral(energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double Psf::angularIntegral(double energy, 
+auto Psf::angularIntegral(double energy, 
                             const astro::SkyDir & srcDir,
                             double theta, 
                             double phi, 
                             const AcceptanceConeVector_t & acceptanceCones, 
-                            double time) {
+                            double time) -> double {
    (void)(phi);
    (void)(time);
    irfInterface::AcceptanceCone & cone(*acceptanceCones.at(0));
@@ -147,7 +147,7 @@ double Psf::angularIntegral(double energy,
    return y;
 }
 
-double Psf::old_base_function(double u, double sigma, double gamma) {
+auto Psf::old_base_function(double u, double sigma, double gamma) -> double {
    (void)(sigma);
    // ugly kluge because of sloppy programming in handoff_response
    // when setting boundaries of fit parameters for the PSF.
@@ -157,12 +157,12 @@ double Psf::old_base_function(double u, double sigma, double gamma) {
    return (1. - 1./gamma)*std::pow(1. + u/gamma, -gamma);
 }
 
-double Psf::old_base_integral(double u, double sigma, double gamma) {
+auto Psf::old_base_integral(double u, double sigma, double gamma) -> double {
    (void)(sigma);
    return 1. - std::pow(1. + u/gamma, 1. - gamma);
 }
 
-double Psf::old_function(double sep, double * pars) {
+auto Psf::old_function(double sep, double * pars) -> double {
    double ncore(pars[0]);
    double sigma(pars[1]);
    double gcore(pars[2]);
@@ -175,7 +175,7 @@ double Psf::old_function(double sep, double * pars) {
            ntail*old_base_function(u, sigma, gtail));
 }
 
-double Psf::old_integral(double sep, double * pars) {
+auto Psf::old_integral(double sep, double * pars) -> double {
    double ncore(pars[0]);
    double sigma(pars[1]);
    double gcore(pars[2]);
@@ -188,7 +188,7 @@ double Psf::old_integral(double sep, double * pars) {
            ntail*old_base_integral(u, sigma, gtail));
 }
 
-double * Psf::pars(double energy, double costh) const {
+auto Psf::pars(double energy, double costh) const -> double * {
    double loge(std::log10(energy));
    if (costh == 1.0) {  // Why is this necessary?
       costh = 0.9999;

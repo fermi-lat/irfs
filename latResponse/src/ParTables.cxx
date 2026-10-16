@@ -52,7 +52,7 @@ ParTables::ParTables(const std::string & fitsfile,
    delete table;
 }
 
-const FitsTable & ParTables::operator[](const std::string & parName) const {
+auto ParTables::operator[](const std::string & parName) const -> const FitsTable & {
    std::map<std::string, FitsTable>::const_iterator table =
       m_parTables.find(parName);
    if (table == m_parTables.end()) {
@@ -113,7 +113,7 @@ setPars(size_t ilogE, size_t icosth, const std::vector<double> & pars) {
    }
 }
 
-std::vector<double> ParTables::params(size_t indx) { 
+auto ParTables::params(size_t indx) -> std::vector<double> { 
 
   std::map<size_t, std::string>::const_iterator itr = m_parIndices.find(indx);
   if(itr == m_parIndices.end())

@@ -6,7 +6,7 @@
 #include "irfUtil/HdCaldb.h"
 #include "irfUtil/Util.h"
 
-int main() {
+auto main() -> int {
    std::string detname("FRONT");
    std::string respname("EFF_AREA");
 //   std::string irfName("TESTIRFS");

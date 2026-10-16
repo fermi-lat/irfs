@@ -53,8 +53,8 @@ PsfIntegralCache::~PsfIntegralCache() {
    delete m_acceptanceCone;
 }
 
-double PsfIntegralCache::
-angularIntegral(double sigma, double gamma, size_t ipsi) const {
+auto PsfIntegralCache::
+angularIntegral(double sigma, double gamma, size_t ipsi) const -> double {
    m_calls++;
    if (sigma < m_sigmas.front() || sigma > m_sigmas.back() ||
        gamma < m_gammas.front() || gamma > m_gammas.back()) {
@@ -88,8 +88,8 @@ angularIntegral(double sigma, double gamma, size_t ipsi) const {
    return value;
 }
 
-double PsfIntegralCache::bilinear(double sigma, double gamma, size_t ipsi,
-                                  size_t isig, size_t igam) const {
+auto PsfIntegralCache::bilinear(double sigma, double gamma, size_t ipsi,
+                                  size_t isig, size_t igam) const -> double {
    double tt = ( (gamma - m_gammas.at(igam))
                  /(m_gammas.at(igam+1) - m_gammas.at(igam)) );
    double uu = ( (log(sigma) - log(m_sigmas.at(isig)))
@@ -104,8 +104,8 @@ double PsfIntegralCache::bilinear(double sigma, double gamma, size_t ipsi,
    return value;
 }
 
-double PsfIntegralCache::
-psfIntegral(double psi, double sigma, double gamma) const {
+auto PsfIntegralCache::
+psfIntegral(double psi, double sigma, double gamma) const -> double {
    std::clock_t start_time(std::clock());
 
    m_gamma_avg += gamma;
@@ -158,7 +158,7 @@ psfIntegral(double psi, double sigma, double gamma) const {
 PsfIntegralCache::PsfIntegrand1::PsfIntegrand1(double sigma, double gamma)
    : m_sigma(sigma), m_gamma(gamma) {}
 
-double PsfIntegralCache::PsfIntegrand1::operator()(double mu) const {
+auto PsfIntegralCache::PsfIntegrand1::operator()(double mu) const -> double {
    double r(std::acos(mu)/m_sigma);
    double u(r*r/2.);
    return 2.*M_PI*Psf::old_base_function(u, m_sigma, m_gamma);
@@ -169,7 +169,7 @@ PsfIntegrand2(double sigma, double gamma, double psi, double roi_radius)
    : m_sigma(sigma), m_gamma(gamma), m_cp(std::cos(psi)), 
      m_sp(std::sin(psi)), m_cr(std::cos(roi_radius)) {}
 
-double PsfIntegralCache::PsfIntegrand2::operator()(double mu) const {
+auto PsfIntegralCache::PsfIntegrand2::operator()(double mu) const -> double {
    double r(std::acos(mu)/m_sigma);
    double u(r*r/2.);
    double phimin(0);

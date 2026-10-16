@@ -24,7 +24,7 @@
 #include "Edisp2.h"
 
 namespace {
-   size_t binIndex(double x, const std::vector<double> & xx) {
+   auto binIndex(double x, const std::vector<double> & xx) -> size_t {
       std::vector<double>::const_iterator ix = 
          std::upper_bound(xx.begin(), xx.end(), x);
       return ix - xx.begin();
@@ -73,21 +73,21 @@ void Edisp2::renormalize() {
    m_renormalized = true;
 }
 
-double Edisp2::value(double appEnergy,
+auto Edisp2::value(double appEnergy,
                      double energy, 
                      const astro::SkyDir & srcDir,
                      const astro::SkyDir & scZAxis,
                      const astro::SkyDir & scXAxis, 
-                     double time) const {
+                     double time) const -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double Edisp2::evaluate(double emeas, double energy,
+auto Edisp2::evaluate(double emeas, double energy,
                         double theta, double phi, double time,
-                        double * pars) const {
+                        double * pars) const -> double {
    (void)(phi);
    (void)(time);
    double xx((emeas - energy)/energy);
@@ -98,8 +98,8 @@ double Edisp2::evaluate(double emeas, double energy,
    return old_function(xx, pars)/energy/scale_factor;
 }
 
-double Edisp2::value(double appEnergy, double energy,
-                     double theta, double phi, double time) const {
+auto Edisp2::value(double appEnergy, double energy,
+                     double theta, double phi, double time) const -> double {
    if (::getenv("DISABLE_EDISP_INTERP")) {
       double costh(std::cos(theta*M_PI/180.));
       costh = std::min(costh, m_parTables.costhetas().back());
@@ -113,7 +113,7 @@ double Edisp2::value(double appEnergy, double energy,
                                    theta, phi, time);
 }
 
-double Edisp2::old_function(double xx, double * pars) const {
+auto Edisp2::old_function(double xx, double * pars) const -> double {
 // See ::edisp_func in handoff_response/src/gen/Dispersion.cxx
    double tt(std::fabs(xx - pars[3]));
    double s1(pars[1]);
@@ -133,7 +133,7 @@ double Edisp2::old_function(double xx, double * pars) const {
    return pars[0]*g1;
 }
 
-double Edisp2::scaleFactor(double logE, double costh) const {
+auto Edisp2::scaleFactor(double logE, double costh) const -> double {
    if (!IrfLoader::interpolate_edisp() && m_interpolator==0) {
       // Use midpoint of logE, costh bins in the FITS tabulations
       // instead of the passed values.  This ensures correct
@@ -166,7 +166,7 @@ double Edisp2::scaleFactor(double logE, double costh) const {
    return my_value;
 }
 
-double * Edisp2::pars(double energy, double costh) const {
+auto Edisp2::pars(double energy, double costh) const -> double * {
    if (!m_renormalized) {
       const_cast<Edisp2 *>(this)->renormalize();
    }

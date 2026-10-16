@@ -27,7 +27,7 @@ using CLHEP::RandFlat;
 #include "Edisp.h"
 
 namespace {
-   bool reverse_cmp(const double & x, const double & y) {
+   auto reverse_cmp(const double & x, const double & y) -> bool {
       return x > y;
    }
 }
@@ -44,12 +44,12 @@ Edisp::Edisp(const std::string & fitsfile, const std::string & extname)
    readData();
 }
 
-double Edisp::value(double appEnergy,
+auto Edisp::value(double appEnergy,
                     double energy, 
                     const astro::SkyDir &srcDir,
                     const astro::SkyDir &scZAxis,
                     const astro::SkyDir &,
-                    double time) const {
+                    double time) const -> double {
 // Inclination wrt spacecraft z-axis in degrees.
    double theta = srcDir.difference(scZAxis)*180./M_PI;
 
@@ -59,8 +59,8 @@ double Edisp::value(double appEnergy,
    return value(appEnergy, energy, theta, phi, time);
 }
 
-double Edisp::value(double appEnergy, double energy,
-                    double theta, double phi, double time) const {
+auto Edisp::value(double appEnergy, double energy,
+                    double theta, double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -88,11 +88,11 @@ double Edisp::value(double appEnergy, double energy,
    return norm*std::pow(1. + x, p1)/(1. + std::exp(arg))/energy;
 }
 
-double Edisp::appEnergy(double energy,
+auto Edisp::appEnergy(double energy,
                         const astro::SkyDir & srcDir,
                         const astro::SkyDir & scZAxis,
                         const astro::SkyDir &,
-                        double time) const {
+                        double time) const -> double {
    (void)(time);
    double mu(std::cos(srcDir.difference(scZAxis)));
    size_t indx = parIndex(energy, mu);
@@ -108,7 +108,7 @@ double Edisp::appEnergy(double energy,
       + energy;
 }
 
-size_t Edisp::parIndex(double energy, double mu) const {
+auto Edisp::parIndex(double energy, double mu) const -> size_t {
    size_t k = std::upper_bound(m_eBounds.begin(), m_eBounds.end(),
                                energy) - m_eBounds.begin() - 1;
    size_t i = std::upper_bound(m_muBounds.begin(), m_muBounds.end(),
@@ -220,7 +220,7 @@ void Edisp::computeCumulativeDists() {
    }
 }
 
-double Edisp::edispIntegrand(double * xx) {
+auto Edisp::edispIntegrand(double * xx) -> double {
    double & x(*xx);
    if (x/s_rwidth > 7.) { // This leads to a 0.1% error in the integrand value
       double logf = s_ltail*std::log(1. + x) - x/s_rwidth;

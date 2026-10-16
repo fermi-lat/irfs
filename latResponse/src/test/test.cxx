@@ -43,7 +43,7 @@
 using facilities::commonUtilities;
 
 namespace {
-   std::string getEnv(const std::string & envVarName) {
+   auto getEnv(const std::string & envVarName) -> std::string {
       char * envvar(::getenv(envVarName.c_str()));
       if (envvar == 0) {
          throw std::runtime_error("Please set the " + envVarName 
@@ -152,10 +152,10 @@ void LatResponseTests::psf_zero_separation() {
    }
 }
 
-double integrate_psf(const irfInterface::IPsf & psf,
+auto integrate_psf(const irfInterface::IPsf & psf,
 		     const irfInterface::AcceptanceCone & cone,
 		     double energy, double theta, double phi, double time, 
-		     int nstep) {
+		     int nstep) -> double {
 
   const astro::SkyDir& roidir = cone.center();
 
@@ -576,7 +576,7 @@ void LatResponseTests::epochDep_tests() {
    CPPUNIT_ASSERT(eff(energy, met1) == eff_epoch1(energy, met1));
 }
 
-int main(int iargc, char * argv[]) {
+auto main(int iargc, char * argv[]) -> int {
 #ifdef TRAP_FPE
 // Add floating point exception traps.
    feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);

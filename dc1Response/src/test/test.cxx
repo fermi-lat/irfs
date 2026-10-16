@@ -11,7 +11,7 @@
 #include "irfInterface/IrfsFactory.h"
 #include "dc1Response/loadIrfs.h"
 
-int main() {
+auto main() -> int {
    st_facilities::Environment::instance();
    if (!std::getenv("CALDB")) {
       std::cout << "CALDB not set, exiting." << std::endl;

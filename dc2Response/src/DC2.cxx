@@ -24,8 +24,8 @@ DC2::DC2(const DC2 & rhs) {
    m_extname = rhs.m_extname;
 }
 
-std::vector<double>::const_iterator 
-DC2::find_iterator(const std::vector<double> & gridValues, double target) {
+auto 
+DC2::find_iterator(const std::vector<double> & gridValues, double target) -> std::vector<double>::const_iterator {
    std::vector<double>::const_iterator it;
    if (target < gridValues.front()) {
       it = gridValues.begin();

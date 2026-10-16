@@ -21,14 +21,14 @@ void test_psf(int iargc, char * argv[]);
 void test_aeff();
 void test_edisp();
 
-int main(int iargc, char * argv[]) {
+auto main(int iargc, char * argv[]) -> int {
    dc1aResponse::load_irfs();
    test_psf(iargc, argv);
    test_aeff();
    test_edisp();
 }
 
-irfInterface::IrfsFactory * irfFactory() {
+auto irfFactory() -> irfInterface::IrfsFactory * {
    return irfInterface::IrfsFactory::instance();
 }
 

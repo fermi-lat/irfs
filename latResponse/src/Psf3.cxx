@@ -27,14 +27,14 @@
 #include "PsfIntegralCache.h"
 
 namespace {
-   double sqr(double x) {
+   auto sqr(double x) -> double {
       return x*x;
    }
    class Array {
    public:
       Array(const std::vector<double> & values, size_t nx) 
          : m_values(values), m_nx(nx) {}
-      double operator()(size_t iy, size_t ix) const {
+      auto operator()(size_t iy, size_t ix) const -> double {
          return m_values[iy*m_nx + ix];
       }
    private:
@@ -71,7 +71,7 @@ Psf3::Psf3(const Psf3 & other) : PsfBase(other),
                                  m_parVectors(other.m_parVectors),
                                  m_integralCache(0) {}
 
-Psf3 & Psf3::operator=(const Psf3 & rhs) {
+auto Psf3::operator=(const Psf3 & rhs) -> Psf3 & {
    if (this != &rhs) {
       PsfBase::operator=(rhs);
       m_logEs = rhs.m_logEs;
@@ -88,12 +88,12 @@ Psf3::~Psf3() {
    delete m_integralCache;
 }
 
-double Psf3::value(const astro::SkyDir & appDir, 
+auto Psf3::value(const astro::SkyDir & appDir, 
                     double energy, 
                     const astro::SkyDir & srcDir, 
                     const astro::SkyDir & scZAxis,
                     const astro::SkyDir & scXAxis, 
-                    double time) const {
+                    double time) const -> double {
    (void)(scXAxis);
    double sep(appDir.difference(srcDir)*180./M_PI);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
@@ -101,8 +101,8 @@ double Psf3::value(const astro::SkyDir & appDir,
    return value(sep, energy, theta, phi, time);
 }
 
-double Psf3::value(double separation, double energy, double theta,
-                    double phi, double time) const {
+auto Psf3::value(double separation, double energy, double theta,
+                    double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -121,8 +121,8 @@ double Psf3::value(double separation, double energy, double theta,
    return my_value;
 }
 
-double Psf3::angularIntegral(double energy, double theta, 
-                              double phi, double radius, double time) const {
+auto Psf3::angularIntegral(double energy, double theta, 
+                              double phi, double radius, double time) const -> double {
    if (energy < 120.) {
       double value = IPsf::angularIntegral(energy, theta, phi, radius, time);
       return value;
@@ -142,8 +142,8 @@ double Psf3::angularIntegral(double energy, double theta,
    return value;
 }
 
-double Psf3::psf_base_integral(double energy, double radius, 
-                                const double * pars) const {
+auto Psf3::psf_base_integral(double energy, double radius, 
+                                const double * pars) const -> double {
    double ncore(pars[0]);
    double ntail(pars[1]);
    double score(pars[2]*scaleFactor(energy));
@@ -164,12 +164,12 @@ double Psf3::psf_base_integral(double energy, double radius,
            ntail*ncore*Psf2::psf_base_integral(ut, gtail)*2.*M_PI*::sqr(stail));
 }
 
-double Psf3::angularIntegral(double energy,
+auto Psf3::angularIntegral(double energy,
                               const astro::SkyDir & srcDir,
                               double theta, 
                               double phi, 
                               const AcceptanceConeVector_t & acceptanceCones, 
-                              double time) {
+                              double time) -> double {
    (void)(phi);
    (void)(time);
 
@@ -196,8 +196,8 @@ double Psf3::angularIntegral(double energy,
    return value;
 }
 
-double Psf3::angularIntegral(double energy, double psi, 
-                              const std::vector<double> & pars) {
+auto Psf3::angularIntegral(double energy, double psi, 
+                              const std::vector<double> & pars) -> double {
    const std::vector<double> & psis(m_integralCache->psis());
    if (psi > psis.back()) {
       std::ostringstream message;
@@ -236,7 +236,7 @@ double Psf3::angularIntegral(double energy, double psi,
    return y;
 }
 
-double Psf3::evaluate(double energy, double sep, const double * pars) const {
+auto Psf3::evaluate(double energy, double sep, const double * pars) const -> double {
    double ncore(pars[0]);
    double ntail(pars[1]);
    double score(pars[2]*scaleFactor(energy));
@@ -416,7 +416,7 @@ void Psf3::getCornerPars(double energy, double theta,
    indx[3] = xsize*(j) + (i-1);
 }
 
-int Psf3::findIndex(const std::vector<double> & xx, double x) {
+auto Psf3::findIndex(const std::vector<double> & xx, double x) -> int {
    typedef std::vector<double>::const_iterator const_iterator_t;
 
    const_iterator_t ix(std::upper_bound(xx.begin(), xx.end(), x));
@@ -435,7 +435,7 @@ int Psf3::findIndex(const std::vector<double> & xx, double x) {
    return i;
 }
 
-std::vector<double> Psf3::params(size_t indx) const { 
+auto Psf3::params(size_t indx) const -> std::vector<double> { 
 
   if(indx >= m_parVectors[0].size())
     throw std::runtime_error("Parameter index out of range.");

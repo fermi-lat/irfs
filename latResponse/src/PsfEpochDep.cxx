@@ -22,7 +22,7 @@ PsfEpochDep::PsfEpochDep(const PsfEpochDep & other)
    }
 }
 
-PsfEpochDep & PsfEpochDep::operator=(const PsfEpochDep & rhs) {
+auto PsfEpochDep::operator=(const PsfEpochDep & rhs) -> PsfEpochDep & {
    if (this != &rhs) {
       irfInterface::IPsf::operator=(rhs);
       EpochDep::operator=(rhs);
@@ -43,37 +43,37 @@ PsfEpochDep::~PsfEpochDep() {
    }
 }
 
-double PsfEpochDep::value(const astro::SkyDir & appDir, 
+auto PsfEpochDep::value(const astro::SkyDir & appDir, 
                           double energy, 
                           const astro::SkyDir & srcDir, 
                           const astro::SkyDir & scZAxis,
                           const astro::SkyDir & scXAxis, 
-                          double time) const {
+                          double time) const -> double {
    size_t indx(index(time));
    return m_psfs[indx]->value(appDir, energy, srcDir, scZAxis, scXAxis, time);
 }
 
-double PsfEpochDep::value(double separation, double energy, double theta,
-                          double phi, double time) const {
+auto PsfEpochDep::value(double separation, double energy, double theta,
+                          double phi, double time) const -> double {
    size_t indx(index(time));
    return m_psfs[indx]->value(separation, energy, theta, phi, time);
 }
 
-double PsfEpochDep::
+auto PsfEpochDep::
 angularIntegral(double energy,
                 const astro::SkyDir & srcDir,
                 double theta, 
                 double phi, 
                 const AcceptanceConeVector_t & acceptanceCones, 
-                double time) {
+                double time) -> double {
    size_t indx(index(time));
    return m_psfs[indx]->angularIntegral(energy, srcDir, theta, phi, 
                                         acceptanceCones, time);
 }
 
-double PsfEpochDep::
+auto PsfEpochDep::
 angularIntegral(double energy, double theta, double phi,
-                double radius, double time) const {
+                double radius, double time) const -> double {
    size_t indx(index(time));
    return m_psfs[indx]->angularIntegral(energy, theta, phi, radius, time);
 }

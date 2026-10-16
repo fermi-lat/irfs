@@ -23,8 +23,8 @@ EfficiencyFactorEpochDep(const EfficiencyFactorEpochDep & other)
    }
 }
 
-EfficiencyFactorEpochDep & 
-EfficiencyFactorEpochDep::operator=(const EfficiencyFactorEpochDep & rhs) {
+auto 
+EfficiencyFactorEpochDep::operator=(const EfficiencyFactorEpochDep & rhs) -> EfficiencyFactorEpochDep & {
    if (this != &rhs) {
       irfInterface::IEfficiencyFactor::operator=(rhs);
       EpochDep::operator=(rhs);
@@ -45,13 +45,13 @@ EfficiencyFactorEpochDep::~EfficiencyFactorEpochDep() throw() {
    }
 }
 
-double EfficiencyFactorEpochDep::operator()(double energy, double met) const {
+auto EfficiencyFactorEpochDep::operator()(double energy, double met) const -> double {
    size_t indx(index(met));
    return m_effs[indx]->operator()(energy, met);
 }
 
-double EfficiencyFactorEpochDep::value(double energy, double livetimefrac,
-                                       bool front, double met) const {
+auto EfficiencyFactorEpochDep::value(double energy, double livetimefrac,
+                                       bool front, double met) const -> double {
    size_t indx(index(met));
    return m_effs[indx]->value(energy, livetimefrac, front, met);
 }

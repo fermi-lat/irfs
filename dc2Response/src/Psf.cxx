@@ -31,7 +31,7 @@ using CLHEP::Hep3Vector;
 #include "PsfScaling.h"
 
 namespace {
-   double psfFunc(double x, double gamma) {
+   auto psfFunc(double x, double gamma) -> double {
       return x*std::pow(1. + x*x/2./gamma, -gamma);
    }
 }
@@ -79,12 +79,12 @@ Psf::Psf(const Psf & rhs)
    }
 }
 
-double Psf::value(const astro::SkyDir & appDir, 
+auto Psf::value(const astro::SkyDir & appDir, 
                   double energy, 
                   const astro::SkyDir & srcDir, 
                   const astro::SkyDir & scZAxis,
                   const astro::SkyDir &,
-                  double time) const {
+                  double time) const -> double {
 // Angle between photon and source directions in radians.
    double separation = appDir.difference(srcDir);
    
@@ -94,8 +94,8 @@ double Psf::value(const astro::SkyDir & appDir,
    return value(separation*180./M_PI, energy, inc*180./M_PI, 0., time);
 }
 
-double Psf::value(double separation, double energy, double theta,
-                  double phi, double time) const {
+auto Psf::value(double separation, double energy, double theta,
+                  double phi, double time) const -> double {
    if (theta < 0) {
       std::ostringstream message;
       message << "dc2Response::Psf::value(...):\n"
@@ -112,7 +112,7 @@ double Psf::value(double separation, double energy, double theta,
    return value(separation, angScale, gam);
 }
 
-double Psf::value(double separation, double angScale, double gam) const {
+auto Psf::value(double separation, double angScale, double gam) const -> double {
    double psfNorm(st_facilities::Util::interpolate(s_gammas, s_psfNorms, gam));
    double x(separation/angScale);
    if (separation == 0) {
@@ -123,7 +123,7 @@ double Psf::value(double separation, double angScale, double gam) const {
       /(angScale*M_PI/180.)/psfNorm;
 }
 
-double Psf::gamma(double logE, double mu) const {
+auto Psf::gamma(double logE, double mu) const -> double {
 // Tabulated gammas from AllGamma fits are not reliable for
 // extrapolation, so force logE and mu to lie on or within grid
 // boundaries.
@@ -140,7 +140,7 @@ double Psf::gamma(double logE, double mu) const {
    return my_gamma;
 }
 
-double Psf::sigma(double logE, double mu) const {
+auto Psf::sigma(double logE, double mu) const -> double {
 // Tabulated sigmas from AllGamma fits are not reliable for
 // extrapolation, so force logE and mu to lie on or within grid
 // boundaries.
@@ -152,18 +152,18 @@ double Psf::sigma(double logE, double mu) const {
    return my_sigma;
 }
 
-double Psf::angularScale(double energy, double mu) const {
+auto Psf::angularScale(double energy, double mu) const -> double {
    double logE(std::log(energy));
    double scale((*m_psfScaling)(energy, mu));
    double my_value = scale*sigma(logE, mu);
    return my_value;
 }
 
-astro::SkyDir Psf::appDir(double energy,
+auto Psf::appDir(double energy,
                           const astro::SkyDir & srcDir,
                           const astro::SkyDir & scZAxis,
                           const astro::SkyDir &,
-                          double time) const {
+                          double time) const -> astro::SkyDir {
    (void)(time);
    double mu(std::cos(srcDir.difference(scZAxis)));
    double theta(drawOffset(energy, mu)*M_PI/180.);
@@ -186,29 +186,29 @@ astro::SkyDir Psf::appDir(double energy,
    return appDir;
 }
 
-double Psf::drawOffset(double energy, double mu) const {
+auto Psf::drawOffset(double energy, double mu) const -> double {
    double logE(std::log(energy));
    return angularScale(energy, mu)*drawScaledDev(gamma(logE, mu));
 }
 
-double Psf::angularIntegral(double energy,
+auto Psf::angularIntegral(double energy,
                             const astro::SkyDir & srcDir,
                             const astro::SkyDir & scZAxis,
                             const astro::SkyDir &,
                             const std::vector<irfInterface::AcceptanceCone *> 
                             & acceptanceCones, 
-                            double time) {
+                            double time) -> double {
    double theta = srcDir.difference(scZAxis)*180./M_PI;
    static double phi(0);
    return angularIntegral(energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double Psf::angularIntegral(double energy, 
+auto Psf::angularIntegral(double energy, 
                             const astro::SkyDir & srcDir,
                             double theta, 
                             double phi, 
                             const std::vector<irfInterface::AcceptanceCone *> 
-                            & acceptanceCones, double time) {
+                            & acceptanceCones, double time) -> double {
    (void)(phi);
    (void)(time);
    if (!m_acceptanceCone || *m_acceptanceCone != *(acceptanceCones[0])) {
@@ -260,8 +260,8 @@ double Psf::angularIntegral(double energy,
    return bilinear(angScale, gamValue, ipsi, iang, igam);
 }
 
-double Psf::angularIntegral(double energy, double theta, 
-                            double phi, double radius, double time) const {
+auto Psf::angularIntegral(double energy, double theta, 
+                            double phi, double radius, double time) const -> double {
    (void)(time);
    s_energy = energy;
    s_theta = theta;
@@ -275,7 +275,7 @@ double Psf::angularIntegral(double energy, double theta,
    return integral;
 }
 
-double Psf::coneIntegrand(double * offset) {
+auto Psf::coneIntegrand(double * offset) -> double {
    return s_self->value(*offset, s_energy, s_theta, s_phi)
       *std::sin(*offset*M_PI/180.)*2.*M_PI*M_PI/180.;
 }
@@ -330,7 +330,7 @@ void Psf::computePsfNorms() {
    }
 }
 
-double Psf::drawScaledDev(double gamma) const {
+auto Psf::drawScaledDev(double gamma) const -> double {
    double xbreak(std::sqrt(2.*gamma));
    double alpha(std::pow(2.*gamma, gamma));
    double beta(2.*gamma - 1.);
@@ -371,7 +371,7 @@ void Psf::computeLowerFractions() {
    }
 }
 
-double Psf::psfIntegrand(double * xx) {
+auto Psf::psfIntegrand(double * xx) -> double {
    const double & x(*xx);
    return ::psfFunc(x, s_gammas.back());
 }
@@ -454,8 +454,8 @@ void Psf::computeAngularIntegrals
    }
 }
 
-double Psf::bilinear(double angScale, double gam, size_t ipsi,
-                     size_t iang, size_t igam) const {
+auto Psf::bilinear(double angScale, double gam, size_t ipsi,
+                     size_t iang, size_t igam) const -> double {
    double tt = (gam - m_gamValues.at(igam))
       /(m_gamValues.at(igam+1) - m_gamValues.at(igam));
    double uu = (angScale - m_angScale.at(iang))
@@ -470,8 +470,8 @@ double Psf::bilinear(double angScale, double gam, size_t ipsi,
    return value;
 }
 
-double Psf::psfIntegral(double psi, double angScale, double gamValue,
-                        double roi_radius) {
+auto Psf::psfIntegral(double psi, double angScale, double gamValue,
+                        double roi_radius) -> double {
    if (roi_radius == 0) {
       roi_radius = m_acceptanceCone->radius()*M_PI/180.;
    }
@@ -510,7 +510,7 @@ double Psf::psfIntegral(double psi, double angScale, double gamValue,
    return my_integral;
 }
 
-double Psf::Gint::value(double mu) const {
+auto Psf::Gint::value(double mu) const -> double {
    double theta = acos(mu)*180./M_PI;
    double my_value = m_psfObj->value(theta, m_angScale, m_gamma);
 

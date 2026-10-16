@@ -41,10 +41,10 @@ IPsf::IPsf() {
    }
 }
 
-std::vector<double> IPsf::value(const std::vector<double>& separation,
+auto IPsf::value(const std::vector<double>& separation,
 				const std::vector<double>& energy,
 				const std::vector<double>& theta,
-				double phi, double time) const {
+				double phi, double time) const -> std::vector<double> {
   if(separation.size() != energy.size() || separation.size() != theta.size())
     throw std::runtime_error("Input arrays must have same dimension.");
 
@@ -60,11 +60,11 @@ std::vector<double> IPsf::value(const std::vector<double>& separation,
   return vals;
 }
 
-astro::SkyDir IPsf::appDir(double energy,
+auto IPsf::appDir(double energy,
                            const astro::SkyDir & srcDir,
                            const astro::SkyDir & scZAxis,
                            const astro::SkyDir & scXAxis,
-                           double time) const {
+                           double time) const -> astro::SkyDir {
    (void)(scXAxis);
 
 // Compute source inclination
@@ -140,8 +140,8 @@ astro::SkyDir IPsf::appDir(double energy,
    return appDir;
 }
 
-double IPsf::angularIntegral(double energy, double theta, 
-                             double phi, double radius, double time) const {
+auto IPsf::angularIntegral(double energy, double theta, 
+                             double phi, double radius, double time) const -> double {
    setStaticVariables(energy, theta, phi, time, this);
    double integral;
    double err(1e-5);
@@ -153,9 +153,9 @@ double IPsf::angularIntegral(double energy, double theta,
    return integral;
 }
 
-std::vector<double> IPsf::angularIntegral(const std::vector<double>& energy, 
+auto IPsf::angularIntegral(const std::vector<double>& energy, 
 					  const std::vector<double>& theta, 
-					  double phi, double radius, double time) const {
+					  double phi, double radius, double time) const -> std::vector<double> {
   if(energy.size() != theta.size())
     throw std::runtime_error("Input arrays must have same dimension.");
 
@@ -178,7 +178,7 @@ void IPsf::setStaticVariables(double energy, double theta, double phi,
    s_self = self;
 }
 
-double IPsf::coneIntegrand(double * offset) {
+auto IPsf::coneIntegrand(double * offset) -> double {
    return s_self->value(*offset, s_energy, s_theta, s_phi, s_time)
       *std::sin(*offset*M_PI/180.)*2.*M_PI*M_PI/180.;
 }
@@ -194,37 +194,37 @@ void IPsf::fill_psi_values() {
    }
 }
 
-double IPsf::angularIntegral(double energy,
+auto IPsf::angularIntegral(double energy,
                              const astro::SkyDir & srcDir,
                              const astro::SkyDir & scZAxis,
                              const astro::SkyDir & scXAxis,
                              const std::vector<AcceptanceCone *> 
                              & acceptanceCones,
-                             double time) {
+                             double time) -> double {
    return psfIntegral(this, energy, srcDir, scZAxis, scXAxis, acceptanceCones,
                       time);
 }
 
-double IPsf::angularIntegral(double energy, 
+auto IPsf::angularIntegral(double energy, 
                              const astro::SkyDir & srcDir,
                              double theta, double phi,
                              const std::vector<AcceptanceCone *> 
                              & acceptanceCones,
-                             double time) {
+                             double time) -> double {
    return psfIntegral(this, energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double IPsf::angularContainment(double energy, double theta, double phi, 
-				double frac, double time, double rtol) const {
+auto IPsf::angularContainment(double energy, double theta, double phi, 
+				double frac, double time, double rtol) const -> double {
   double fmax = angularIntegral(energy,theta,phi,180.);
   IntegralFunctor fn = IntegralFunctor(*this, energy, theta, phi, time);
   return st_facilities::RootFinder::find_root(fn, 0.0, 180.0, frac*fmax, rtol);
 }
 
-std::vector<double> IPsf::angularContainment(const std::vector<double>& energy, 
+auto IPsf::angularContainment(const std::vector<double>& energy, 
 					     const std::vector<double>& theta, 
 					     double phi, 
-					     double frac, double time, double rtol) const {
+					     double frac, double time, double rtol) const -> std::vector<double> {
   if(energy.size() != theta.size())
     throw std::runtime_error("Input arrays must have same dimension.");
 
@@ -238,28 +238,28 @@ std::vector<double> IPsf::angularContainment(const std::vector<double>& energy,
   return vals;
 }
 
-double IPsf::psfIntegral(IPsf * self,
+auto IPsf::psfIntegral(IPsf * self,
                          double energy,
                          const astro::SkyDir & srcDir,
                          const astro::SkyDir & scZAxis,
                          const astro::SkyDir & scXAxis,
                          const std::vector<irfInterface::AcceptanceCone *> 
                          & acceptanceCones,
-                         double time) {
+                         double time) -> double {
    (void)(scXAxis);
    double theta(srcDir.difference(scZAxis)*180./M_PI);
    double phi(0);
    return psfIntegral(self, energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double IPsf::psfIntegral(IPsf * self,
+auto IPsf::psfIntegral(IPsf * self,
                          double energy,
                          const astro::SkyDir & srcDir,
                          double theta, 
                          double phi, 
                          const std::vector<irfInterface::AcceptanceCone *> 
                          & acceptanceCones,
-                         double time) {
+                         double time) -> double {
    setStaticVariables(energy, theta, phi, time, self);
    
    const irfInterface::AcceptanceCone & roiCone(*acceptanceCones.front());
@@ -292,12 +292,12 @@ double IPsf::psfIntegral(IPsf * self,
    return firstIntegral + secondIntegral;
 }
 
-double IPsf::psfIntegrand1(double * mu) {
+auto IPsf::psfIntegrand1(double * mu) -> double {
    double sep(std::acos(*mu)*180./M_PI);
    return 2.*M_PI*s_self->value(sep, s_energy, s_theta, s_phi, s_time);
 }
 
-double IPsf::psfIntegrand2(double * mu) {
+auto IPsf::psfIntegrand2(double * mu) -> double {
    double sep(std::acos(*mu)*180./M_PI);
    double phimin(0);
    double arg((s_cr - *mu*s_cp)/std::sqrt(1. - *mu*(*mu))/s_sp);
@@ -311,7 +311,7 @@ double IPsf::psfIntegrand2(double * mu) {
    return 2.*phimin*s_self->value(sep, s_energy, s_theta, s_phi, s_time);
 }
 
-double IPsf::IntegralFunctor::operator()(double sep) const {
+auto IPsf::IntegralFunctor::operator()(double sep) const -> double {
   return m_psf.angularIntegral(m_energy, m_theta, m_phi, sep, m_time);
 }
 

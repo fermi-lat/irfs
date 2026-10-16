@@ -76,19 +76,19 @@ void Aeff::readData() {
    delete effArea;
 }
 
-double Aeff::value(double energy, 
+auto Aeff::value(double energy, 
                    const astro::SkyDir & srcDir, 
                    const astro::SkyDir & scZAxis,
                    const astro::SkyDir &,
-                   double time) const {
+                   double time) const -> double {
 // Inclination wrt spacecraft z-axis in radians.
    double theta = srcDir.difference(scZAxis);
    theta *= 180./M_PI;
    return value(energy, theta, 0., time);
 }
 
-double Aeff::value(double energy, double theta, double phi,
-                   double time) const {
+auto Aeff::value(double energy, double theta, double phi,
+                   double time) const -> double {
    (void)(phi);
    (void)(time);
 
@@ -113,7 +113,7 @@ double Aeff::value(double energy, double theta, double phi,
    return std::exp(my_value);
 }
 
-double Aeff::upperLimit() const {
+auto Aeff::upperLimit() const -> double {
    return m_aeffMax;
 }
 

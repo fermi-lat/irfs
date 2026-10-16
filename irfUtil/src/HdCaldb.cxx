@@ -40,13 +40,13 @@ HdCaldb::~HdCaldb() {
    }
 }
 
-std::pair<std::string, int> 
+auto 
 HdCaldb::operator()(const std::string & detName, 
                     const std::string & respName,
                     const std::string & expression, 
                     const std::string & filter,
                     const std::string & date, 
-                    const std::string & time) {
+                    const std::string & time) -> std::pair<std::string, int> {
    int nret;
    int nfound(0);
    int status(0);

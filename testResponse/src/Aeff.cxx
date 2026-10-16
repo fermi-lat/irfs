@@ -18,18 +18,18 @@
 
 namespace testResponse {
 
-double Aeff::value(double energy, 
+auto Aeff::value(double energy, 
                    const astro::SkyDir &srcDir, 
                    const astro::SkyDir &scZAxis,
                    const astro::SkyDir &scXAxis, 
-                   double time) const {
+                   double time) const -> double {
    (void)(scXAxis);
    double theta = srcDir.difference(scZAxis)*180./M_PI;
    return value(energy, theta, 0, time);
 }
 
-double Aeff::value(double energy, double theta, double phi,
-                   double time) const {
+auto Aeff::value(double energy, double theta, double phi,
+                   double time) const -> double {
    (void)(phi);
    (void)(time);
    if (theta < 0) {
@@ -49,7 +49,7 @@ double Aeff::value(double energy, double theta, double phi,
    return 0;
 }
 
-double Aeff::upperLimit() const {
+auto Aeff::upperLimit() const -> double {
    return m_params[0];
 }
 

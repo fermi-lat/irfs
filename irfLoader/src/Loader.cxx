@@ -49,7 +49,7 @@ void Loader::go() {
    }
 }
 
-const std::map<std::string, std::vector<std::string> > & Loader::respIds() {
+auto Loader::respIds() -> const std::map<std::string, std::vector<std::string> > & {
    return irfInterface::IrfRegistry::instance().respIds();
 }
 
@@ -57,7 +57,7 @@ void Loader_go() {
    Loader::go();
 }
 
-const std::map<std::string, std::vector<std::string> > & Loader_respIds() {
+auto Loader_respIds() -> const std::map<std::string, std::vector<std::string> > & {
    return Loader::respIds();
 }
 

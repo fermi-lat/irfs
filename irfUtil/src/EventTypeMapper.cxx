@@ -85,7 +85,7 @@ EventTypeMapper::EventTypeMapper() {
    delete evclass_map;
 }
 
-EventTypeMapper & EventTypeMapper::instance() {
+auto EventTypeMapper::instance() -> EventTypeMapper & {
    if (s_instance == 0) {
       s_instance = new EventTypeMapper();
    }
@@ -97,9 +97,9 @@ void EventTypeMapper::deleteInstance() {
    s_instance = 0;
 }
 
-const std::pair<unsigned int, std::string> &
+auto
 EventTypeMapper::bitPos(const std::string & irfName,
-                        const std::string & event_type) const {
+                        const std::string & event_type) const -> const std::pair<unsigned int, std::string> & {
    const EvTypeMapping_t & my_mapping = mapping(irfName);
    EvTypeMapping_t::const_iterator it = my_mapping.find(event_type);
    if (it == my_mapping.end()) {
@@ -108,8 +108,8 @@ EventTypeMapper::bitPos(const std::string & irfName,
    return it->second;
 }
 
-const EventTypeMapper::EvTypeMapping_t &
-EventTypeMapper::mapping(const std::string & irfName) const {
+auto
+EventTypeMapper::mapping(const std::string & irfName) const -> const EventTypeMapper::EvTypeMapping_t & {
    std::map<std::string, EvTypeMapping_t>::const_iterator it 
       = m_mappings.find(irfName);
    if (it == m_mappings.end()) {
@@ -119,8 +119,8 @@ EventTypeMapper::mapping(const std::string & irfName) const {
    return it->second;
 }
 
-const std::map<std::string, unsigned int> &
-EventTypeMapper::full_bitmasks_by_partition(const std::string & irfName) const {
+auto
+EventTypeMapper::full_bitmasks_by_partition(const std::string & irfName) const -> const std::map<std::string, unsigned int> & {
    std::map<std::string, std::map<std::string, unsigned int> >::const_iterator
       it = m_full_bitmasks.find(irfName);
    if (it == m_full_bitmasks.end()) {

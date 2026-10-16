@@ -18,7 +18,7 @@ namespace irfInterface {
 
 IrfsFactory * IrfsFactory::s_instance(0);
 
-IrfsFactory * IrfsFactory::instance() {
+auto IrfsFactory::instance() -> IrfsFactory * {
    if (s_instance == 0) {
       s_instance = new IrfsFactory();
    }
@@ -38,7 +38,7 @@ IrfsFactory::~IrfsFactory() {
    m_irfNames.clear();
 }
 
-Irfs * IrfsFactory::create(const std::string & name) const {
+auto IrfsFactory::create(const std::string & name) const -> Irfs * {
    std::map<std::string, Irfs *>::const_iterator itor 
       = m_prototypes.find(name);
    if (itor == m_prototypes.end()) {

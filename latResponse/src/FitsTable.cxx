@@ -20,7 +20,7 @@
 #include "latResponse/FitsTable.h"
 
 namespace {
-   size_t binIndex(double x, const std::vector<double> & xx) {
+   auto binIndex(double x, const std::vector<double> & xx) -> size_t {
       std::vector<double>::const_iterator ix = 
          std::upper_bound(xx.begin(), xx.end(), x);
       return ix - xx.begin();
@@ -85,7 +85,7 @@ FitsTable::FitsTable(const FitsTable & rhs)
                                  0, 10, -1, 1);
 }
 
-FitsTable & FitsTable::operator=(const FitsTable & rhs) {
+auto FitsTable::operator=(const FitsTable & rhs) -> FitsTable & {
    if (this != &rhs) {
       delete m_interpolator;
       m_interpolator = new Bilinear(*rhs.m_interpolator);
@@ -104,8 +104,8 @@ FitsTable::~FitsTable() {
    delete m_interpolator;
 }
 
-double FitsTable::
-value(double logenergy, double costh, bool interpolate) const {
+auto FitsTable::
+value(double logenergy, double costh, bool interpolate) const -> double {
    if (interpolate) {
       if (costh > m_mus.back()) {
          costh = m_mus.back();
@@ -156,7 +156,7 @@ void FitsTable::getCornerPars(double logE, double costh,
    }
 }
 
-double FitsTable::getPar(size_t ilogE, size_t icosth) const {
+auto FitsTable::getPar(size_t ilogE, size_t icosth) const -> double {
    return m_interpolator->getPar(ilogE, icosth);
 }
 

@@ -58,8 +58,8 @@ IrfHdus::IrfHdus(const std::string & irf_name,
 
 typedef std::vector< std::pair<std::string, std::string> > FilenameHduPairs_t;
 
-const FilenameHduPairs_t & 
-IrfHdus::operator()(const std::string & cname) const {
+auto 
+IrfHdus::operator()(const std::string & cname) const -> const FilenameHduPairs_t & {
    const std::map<std::string, FilenameHduPairs_t>::const_iterator 
       it(m_file_hdus.find(cname));
    if (it == m_file_hdus.end()) {
@@ -69,34 +69,34 @@ IrfHdus::operator()(const std::string & cname) const {
    return it->second;
 }
 
-unsigned int IrfHdus::bitPos() const {
+auto IrfHdus::bitPos() const -> unsigned int {
    return m_bitPos;
 }
 
-int IrfHdus::convType() const {
+auto IrfHdus::convType() const -> int {
    return m_convType;
 }
 
-size_t IrfHdus::numEpochs() const {
+auto IrfHdus::numEpochs() const -> size_t {
    return m_file_hdus.begin()->second.size();
 }
 
-const std::vector<std::string> & IrfHdus::cnames() const {
+auto IrfHdus::cnames() const -> const std::vector<std::string> & {
    return m_cnames;
 }
 
-IrfHdus IrfHdus::aeff(const std::string & irf_name,
-                      const std::string & event_type) {
+auto IrfHdus::aeff(const std::string & irf_name,
+                      const std::string & event_type) -> IrfHdus {
    return IrfHdus(irf_name, event_type, s_aeff_cnames);
 }
 
-IrfHdus IrfHdus::psf(const std::string & irf_name,
-                     const std::string & event_type) {
+auto IrfHdus::psf(const std::string & irf_name,
+                     const std::string & event_type) -> IrfHdus {
    return IrfHdus(irf_name, event_type, s_psf_cnames);
 }
 
-IrfHdus IrfHdus::edisp(const std::string & irf_name,
-                       const std::string & event_type) {
+auto IrfHdus::edisp(const std::string & irf_name,
+                       const std::string & event_type) -> IrfHdus {
    return IrfHdus(irf_name, event_type, s_edisp_cnames);
 }
 

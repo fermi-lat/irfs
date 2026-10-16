@@ -23,7 +23,7 @@
 #include "PsfIntegralCache.h"
 
 namespace {
-   double sqr(double x) {
+   auto sqr(double x) -> double {
       return x*x;
    }
 }
@@ -40,16 +40,16 @@ Psf2::Psf2(const Psf2 & rhs) : Psf(rhs) {}
 Psf2::~Psf2() {
 }
 
-double Psf2::value(double separation, double energy, double theta,
-                  double phi, double time) const {
+auto Psf2::value(double separation, double energy, double theta,
+                  double phi, double time) const -> double {
    (void)(phi);
    (void)(time);
    double * my_pars(pars(energy, std::cos(theta*M_PI/180.)));
    return psf_function(separation*M_PI/180., my_pars);
 }
 
-double Psf2::angularIntegral(double energy, double theta, 
-                             double phi, double radius, double time) const {
+auto Psf2::angularIntegral(double energy, double theta, 
+                             double phi, double radius, double time) const -> double {
    if (energy < 120.) {
       double integral = IPsf::angularIntegral(energy, theta, phi, radius, time);
       return integral;
@@ -73,12 +73,12 @@ double Psf2::angularIntegral(double energy, double theta,
            ntail*ncore*psf_base_integral(ut, gtail)*2.*M_PI*::sqr(stail));
 }
 
-double Psf2::angularIntegral(double energy,
+auto Psf2::angularIntegral(double energy,
                              const astro::SkyDir & srcDir,
                              double theta,
                              double phi, 
                              const AcceptanceConeVector_t & acceptanceCones,
-                             double time) {
+                             double time) -> double {
                              
    (void)(phi);
    (void)(time);
@@ -129,7 +129,7 @@ double Psf2::angularIntegral(double energy,
    return y;
 }
 
-double Psf2::psf_base_function(double u, double gamma) {
+auto Psf2::psf_base_function(double u, double gamma) -> double {
    // ugly kluge because of sloppy programming in handoff_response
    // when setting boundaries of fit parameters for the PSF.
    if (gamma == 1) {
@@ -138,7 +138,7 @@ double Psf2::psf_base_function(double u, double gamma) {
    return (1. - 1./gamma)*std::pow(1. + u/gamma, -gamma);
 }
 
-double Psf2::psf_base_integral(double u, double gamma) {
+auto Psf2::psf_base_integral(double u, double gamma) -> double {
    double arg(1. + u/gamma);
    if (arg < 0) {
       std::cout << "u = " << u
@@ -149,7 +149,7 @@ double Psf2::psf_base_integral(double u, double gamma) {
    return 1. - std::pow(arg, 1. - gamma);
 }
 
-double Psf2::psf_function(double sep, double * pars) {
+auto Psf2::psf_function(double sep, double * pars) -> double {
    double ncore(pars[0]);
    double ntail(pars[1]);
    double score(pars[2]);
@@ -166,7 +166,7 @@ double Psf2::psf_function(double sep, double * pars) {
            ntail*ncore*psf_base_function(ut, gtail));
 }
 
-double Psf2::psf_integral(double sep, double * pars) {
+auto Psf2::psf_integral(double sep, double * pars) -> double {
    double ncore(pars[0]);
    double ntail(pars[1]);
    double score(pars[2]);
@@ -183,7 +183,7 @@ double Psf2::psf_integral(double sep, double * pars) {
            ntail*ncore*psf_base_integral(ut, gtail));
 }
 
-double * Psf2::pars(double energy, double costh) const {
+auto Psf2::pars(double energy, double costh) const -> double * {
    double loge(std::log10(energy));
    if (costh == 1.0) {  // Why is this necessary?
       costh = 0.9999;

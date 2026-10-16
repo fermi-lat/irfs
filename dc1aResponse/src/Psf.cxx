@@ -62,12 +62,12 @@ Psf::Psf(const Psf &rhs) : IPsf(rhs) {
    m_haveAngularIntegrals = rhs.m_haveAngularIntegrals;
 }
 
-double Psf::value(const astro::SkyDir &appDir, 
+auto Psf::value(const astro::SkyDir &appDir, 
                   double energy, 
                   const astro::SkyDir &srcDir, 
                   const astro::SkyDir &scZAxis,
                   const astro::SkyDir &, 
-                  double time) const {
+                  double time) const -> double {
    (void)(time);
 // Angle between photon and source directions in radians.
    double separation = appDir.difference(srcDir);
@@ -79,11 +79,11 @@ double Psf::value(const astro::SkyDir &appDir,
    return value(separation, sep_mean);
 }
 
-astro::SkyDir Psf::appDir(double energy,
+auto Psf::appDir(double energy,
                           const astro::SkyDir &srcDir,
                           const astro::SkyDir &scZAxis,
                           const astro::SkyDir &,
-                          double time) const {
+                          double time) const -> astro::SkyDir {
    (void)(time);
    
    double inclination = srcDir.difference(scZAxis);
@@ -108,8 +108,8 @@ astro::SkyDir Psf::appDir(double energy,
    return appDir;
 }
 
-double Psf::value(double separation, double energy, double theta,
-                  double phi, double time) const {
+auto Psf::value(double separation, double energy, double theta,
+                  double phi, double time) const -> double {
    if (theta < 0) {
       std::ostringstream message;
       message << "dc1aResponse::Psf::value(...):\n"
@@ -123,7 +123,7 @@ double Psf::value(double separation, double energy, double theta,
    return value(separation*M_PI/180., sep_mean);
 }
 
-double Psf::value(double separation, double sep_mean) const {
+auto Psf::value(double separation, double sep_mean) const -> double {
    double x = separation/sep_mean;
    double my_value;
    if (separation != 0) {
@@ -139,23 +139,23 @@ double Psf::value(double separation, double sep_mean) const {
    return 0;
 }
 
-double Psf::angularIntegral(double energy,
+auto Psf::angularIntegral(double energy,
                             const astro::SkyDir & srcDir,
                             const astro::SkyDir & scZAxis,
                             const astro::SkyDir &,
                             const std::vector<irfInterface::AcceptanceCone *> 
-                            &acceptanceCones, double time) {
+                            &acceptanceCones, double time) -> double {
    double theta = srcDir.difference(scZAxis)*180./M_PI;
    static double phi;
    return angularIntegral(energy, srcDir, theta, phi, acceptanceCones, time);
 }
 
-double Psf::angularIntegral(double energy, 
+auto Psf::angularIntegral(double energy, 
                             const astro::SkyDir & srcDir,
                             double theta, 
                             double phi, 
                             const std::vector<irfInterface::AcceptanceCone *> 
-                            & acceptanceCones, double time) {
+                            & acceptanceCones, double time) -> double {
    (void)(phi);
    (void)(time);
    if (!m_acceptanceCone || *m_acceptanceCone != *(acceptanceCones[0])) {
@@ -200,8 +200,8 @@ double Psf::angularIntegral(double energy,
    return my_value;
 }
 
-double Psf::angularIntegral(double energy, double theta, 
-                            double phi, double radius, double time) const {
+auto Psf::angularIntegral(double energy, double theta, 
+                            double phi, double radius, double time) const -> double {
    (void)(phi);
    (void)(time);
    double scaledDev = radius*M_PI/180./sepMean(energy, theta*M_PI/180.);
@@ -214,7 +214,7 @@ double Psf::angularIntegral(double energy, double theta,
                                            
 }
 
-double Psf::sepMean(double energy, double inclination) const {
+auto Psf::sepMean(double energy, double inclination) const -> double {
    double mu = std::cos(inclination);
    double my_value = (m_psfParams[0]*(1. - mu)*(1. - mu) + m_psfParams[1])
       *std::pow((1./energy + 1./m_psfParams[3]), m_psfParams[2]);
@@ -268,7 +268,7 @@ void Psf::computeAngularIntegrals
    }
 }
 
-double Psf::psfIntegral(double psi, double sepMean, double roi_radius) {
+auto Psf::psfIntegral(double psi, double sepMean, double roi_radius) -> double {
    if (roi_radius == 0) {
       roi_radius = m_acceptanceCone->radius()*M_PI/180.;
    }
@@ -307,7 +307,7 @@ double Psf::psfIntegral(double psi, double sepMean, double roi_radius) {
    return my_integral;
 }
 
-double Psf::Gint::value(double mu) const {
+auto Psf::Gint::value(double mu) const -> double {
    double theta = acos(mu);
    double my_value = m_psfObj->value(theta, m_sepMean);
 
@@ -326,12 +326,12 @@ double Psf::Gint::value(double mu) const {
    return 2.*M_PI*my_value;
 }
 
-double Psf::scaledDist(double x) const {
+auto Psf::scaledDist(double x) const -> double {
    double p1(m_psfParams[4]);
    return x*std::pow(1. + m_p2*x*x, -p1);
 }
 
-double Psf::p2(double p1) const {
+auto Psf::p2(double p1) const -> double {
    double scale(m_psfParams.at(5));
    double pref(m_psfParams.at(6));
    return std::exp(scale*std::log(pref/std::log(p1)));
@@ -361,7 +361,7 @@ void Psf::computeCumulativeDist() {
    }
 }
 
-double Psf::drawScaledDev() const {
+auto Psf::drawScaledDev() const -> double {
    double xi = RandFlat::shoot();
    double scaledDev(0);
    try {

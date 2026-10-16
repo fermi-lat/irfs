@@ -192,7 +192,7 @@ void irfInterfaceTests::test_IrfRegistry() {
    }
 }
 
-int main() {
+auto main() -> int {
 #if defined(TRAP_FPE) || defined(HEADAS)
       feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);
 #else

@@ -21,7 +21,7 @@ EdispEpochDep::EdispEpochDep(const EdispEpochDep & other)
    }
 }
 
-EdispEpochDep & EdispEpochDep::operator=(const EdispEpochDep & rhs) {
+auto EdispEpochDep::operator=(const EdispEpochDep & rhs) -> EdispEpochDep & {
    irfInterface::IEdisp::operator=(rhs);
    EpochDep::operator=(rhs);
    for (size_t i(0); i < m_edisps.size(); i++) {
@@ -39,20 +39,20 @@ EdispEpochDep::~EdispEpochDep() {
    }
 }
 
-double EdispEpochDep::value(double appEnergy, 
+auto EdispEpochDep::value(double appEnergy, 
                             double energy,
                             const astro::SkyDir & srcDir, 
                             const astro::SkyDir & scZAxis,
                             const astro::SkyDir & scXAxis,
-                            double time) const {
+                            double time) const -> double {
    size_t indx(index(time));
    return m_edisps[indx]->value(appEnergy, energy, srcDir, scZAxis,
                                 scXAxis, time);
 }
 
-double EdispEpochDep::value(double appEnergy, double energy,
+auto EdispEpochDep::value(double appEnergy, double energy,
                             double theta, double phi,
-                            double time) const {
+                            double time) const -> double {
    size_t indx(index(time));
    return m_edisps[indx]->value(appEnergy, energy, theta, phi, time);
 }
