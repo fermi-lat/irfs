@@ -19,7 +19,7 @@ target_include_directories(
 )
 
 target_link_libraries(pyIrfLoader PRIVATE
-    irfLoader Python3::Python CLHEP::VectorS CLHEP::RandomS)
+    irfLoader Python3::SABIModule CLHEP::VectorS CLHEP::RandomS)
 
 if(APPLE)
   target_link_options(pyIrfLoader PRIVATE -bundle -flat_namespace)
