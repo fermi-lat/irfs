@@ -79,7 +79,7 @@ later). Treat the code and the CALDB index as the source of truth.
 | Depends on | CLHEP | Random numbers (`IPsf::appDir`, `IEdisp::appEnergy`) and 3-vectors. |
 | Test only | CppUnit | `test_irfInterface`, `test_irfLoader`, `test_latResponse`, `test_testResponse`. |
 | Used by | `Likelihood` | The main client. `irfLoader::Loader_go()`/`Loader_respIds()`, `IrfsFactory::create`, and through `Irfs`: `IAeff` (including `setPhiDependence`), `IPsf` (`value`, `angularIntegral` with `AcceptanceCone`s), `IEdisp`, `IEfficiencyFactor::value`, `Irfs::irfID()` as the event-type key. |
-| Used by | `pyLikelihood` | SWIG-wraps `irfLoader/Loader.h`, `IrfsFactory.h`, `IEfficiencyFactor.h`, `Irfs.h`. |
+| Used by | `pyLikelihood` | SWIG-wraps only `irfInterface/IEfficiencyFactor.h`. `irfLoader/Loader.h`, `IrfsFactory.h` and `Irfs.h` are `#include`d for its C++ helpers but not wrapped, so Python has no `IrfsFactory`, `Irfs` or `Loader` (see `src/pyLikelihood/doc/architecture/swig-interface.md`). |
 | Used by | `dataSubselector` | Only `irfUtil::EventTypeMapper` (in `Cuts::append_event_type_partition`). It also reads `irf_index.fits` and `valid_ev*_selections.txt` from the CALDB itself. It links `irfLoader` and `irfInterface` but uses neither. |
 | Used by | `observationSim` | `gtobssim`: `Loader::go()`/`respIds()`, `IrfsFactory`, `Irfs` (sampling via `IPsf::appDir`, `IEdisp::appEnergy`), and `irfUtil::EventTypeMapper`. |
 | Used by | `rspgen` | `Loader`, `IrfsFactory`, `Irfs`, `IAeff`, `IPsf`, `IEdisp::integral`. |
