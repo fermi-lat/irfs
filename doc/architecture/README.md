@@ -301,7 +301,7 @@ is not installed.
 ### Environment variables
 
 Conda activation sets the `CALDB*` variables (see "Runtime environment"
-in `docs/architecture/README.md`).
+in ScienceTools' `docs/architecture/README.md`).
 
 | Variable | Read by | Effect |
 |----------|---------|--------|
@@ -353,6 +353,15 @@ in `docs/architecture/README.md`).
 - **CTest:** none of the tests are registered (`add_test` appears nowhere).
   Run them by hand from an activated environment, from a scratch
   directory.
+- **ST-unit-test:** the default run of ScienceTools'
+  `recipe/tests/ST-unit-test` (`unitTestsWithoutRoot`) runs
+  `test_irfLoader`, `test_irfInterface`, `test_latResponse` and
+  `test_irfUtil`, and passes on their exit status only. There is no
+  `check_test_<x>_output` function for irfs and no reference data for it
+  anywhere (not in `fermitools-test-scripts-data`, `fermitools-data`
+  `outrefFiles/` or this repo). `p8_test_irfUtil` and the legacy
+  `test_*Response` programs are not listed. See "Testing" in
+  ScienceTools' `docs/architecture/README.md`.
 
 | Test | Framework | Needs | Checks |
 |------|-----------|-------|--------|
