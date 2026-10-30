@@ -13,7 +13,7 @@ target_include_directories(
 
 target_link_libraries(
   irfLoader
-  PUBLIC facilities st_app st_stream st_facilities irfInterface dc1aResponse
+  PUBLIC facilities st_stream st_facilities irfInterface dc1aResponse
   dc1Response dc2Response latResponse testResponse tip
 )
 
@@ -25,7 +25,7 @@ endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_executable(gtirfs src/gtirfs/gtirfs.cxx)
-target_link_libraries(gtirfs PRIVATE irfLoader)
+target_link_libraries(gtirfs PRIVATE irfLoader st_app)
 
 ###### Tests ######
 add_executable(test_irfLoader src/test/test.cxx)
