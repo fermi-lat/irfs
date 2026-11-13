@@ -35,7 +35,7 @@ namespace latResponse {
 EfficiencyFactor::
 EfficiencyFactor() : m_havePars(false) {
    char * parfile = ::getenv("EFFICIENCY_PAR_FILE");
-   if (parfile != 0) {
+   if (parfile != nullptr) {
       readPars(parfile);
       m_havePars = true;
    }
@@ -134,7 +134,7 @@ auto EfficiencyFactor::operator()(double energy, double met) const -> double {
               << tmin << " to " << tmax << "MET s";
       throw std::runtime_error(message.str());
    }
-   std::vector<double>::const_iterator it 
+   auto it 
       = std::upper_bound(m_start.begin(), m_start.end(), met);
    size_t indx = it - m_start.begin() - 1;
 

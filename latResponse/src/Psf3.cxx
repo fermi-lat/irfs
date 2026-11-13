@@ -50,7 +50,7 @@ Psf3::Psf3(const irfUtil::IrfHdus & psf_hdus, size_t iepoch, size_t nrow)
              psf_hdus.convType() == 0,
              psf_hdus("RPSF").at(iepoch).second,
              psf_hdus("PSF_SCALING").at(iepoch).second),
-     m_integralCache(0) {
+     m_integralCache(nullptr) {
    readFits(psf_hdus("RPSF").at(iepoch).first,
             psf_hdus("RPSF").at(iepoch).second, nrow);
    normalize_pars();
@@ -58,7 +58,7 @@ Psf3::Psf3(const irfUtil::IrfHdus & psf_hdus, size_t iepoch, size_t nrow)
 
 Psf3::Psf3(const std::string & fitsfile, bool isFront,
            const std::string & extname, size_t nrow) 
-   : PsfBase(fitsfile, isFront, extname), m_integralCache(0) {
+   : PsfBase(fitsfile, isFront, extname), m_integralCache(nullptr) {
    readFits(fitsfile, extname, nrow);
    normalize_pars();
 }
@@ -69,7 +69,7 @@ Psf3::Psf3(const Psf3 & other) : PsfBase(other),
                                  m_cosths(other.m_cosths),
                                  m_thetas(other.m_thetas),
                                  m_parVectors(other.m_parVectors),
-                                 m_integralCache(0) {}
+                                 m_integralCache(nullptr) {}
 
 auto Psf3::operator=(const Psf3 & rhs) -> Psf3 & {
    if (this != &rhs) {
@@ -79,7 +79,7 @@ auto Psf3::operator=(const Psf3 & rhs) -> Psf3 & {
       m_cosths = rhs.m_cosths;
       m_thetas = rhs.m_thetas;
       m_parVectors = rhs.m_parVectors;
-      m_integralCache = 0;
+      m_integralCache = nullptr;
    }
    return *this;
 }
@@ -417,9 +417,9 @@ void Psf3::getCornerPars(double energy, double theta,
 }
 
 auto Psf3::findIndex(const std::vector<double> & xx, double x) -> int {
-   typedef std::vector<double>::const_iterator const_iterator_t;
+   using const_iterator_t = std::vector<double>::const_iterator;
 
-   const_iterator_t ix(std::upper_bound(xx.begin(), xx.end(), x));
+   auto ix(std::upper_bound(xx.begin(), xx.end(), x));
    if (ix == xx.end() && x != xx.back()) {
       std::cout << xx.front() << "  "
                 << x << "  "
@@ -441,8 +441,8 @@ auto Psf3::params(size_t indx) const -> std::vector<double> {
     throw std::runtime_error("Parameter index out of range.");
 
   std::vector<double> vals(m_parVectors.size(),0.0);
-  std::vector< std::vector<double> >::const_iterator itr0 = m_parVectors.begin();
-  std::vector<double>::iterator itr1 = vals.begin();
+  auto itr0 = m_parVectors.begin();
+  auto itr1 = vals.begin();
   for( ;itr0 != m_parVectors.end() && itr1 != vals.end();
        ++itr0, ++itr1)
     *itr1 = (*itr0)[indx];
@@ -458,10 +458,10 @@ void Psf3::setParams(size_t indx, const std::vector<double>& params) {
     throw std::runtime_error("Wrong size for parameter array.");
 
   delete m_integralCache;
-  m_integralCache = 0;
+  m_integralCache = nullptr;
 
-  std::vector<double>::const_iterator itr0 = params.begin();
-  std::vector< std::vector<double> >::iterator itr1 = m_parVectors.begin();
+  auto itr0 = params.begin();
+  auto itr1 = m_parVectors.begin();
 
   for( ;itr0 != params.end() && itr1 != m_parVectors.end();
        ++itr0, ++itr1)

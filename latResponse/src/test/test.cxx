@@ -45,7 +45,7 @@ using facilities::commonUtilities;
 namespace {
    auto getEnv(const std::string & envVarName) -> std::string {
       char * envvar(::getenv(envVarName.c_str()));
-      if (envvar == 0) {
+      if (envvar == nullptr) {
          throw std::runtime_error("Please set the " + envVarName 
                                   + " environment variable.");
       }
@@ -133,7 +133,7 @@ void LatResponseTests::psf_zero_separation() {
 
    double time(239846401.);  // 08Aug2008 00:00:00
    
-   for (std::vector<std::string>::const_iterator name = m_irfNames.begin();
+   for (auto name = m_irfNames.begin();
         name != m_irfNames.end(); ++name) {
       irfInterface::Irfs * myIrfs(m_irfsFactory->create(*name));
       const irfInterface::IPsf & psf(*myIrfs->psf());
@@ -200,7 +200,7 @@ void LatResponseTests::psf_roi_integral() {
 
   std::vector<irfInterface::AcceptanceCone *> cones;
 
-  irfInterface::AcceptanceCone * cone = new irfInterface::AcceptanceCone(roidir,1.3);
+  auto * cone = new irfInterface::AcceptanceCone(roidir,1.3);
   cones.push_back(cone);
 
   int nstep = 100;
@@ -233,16 +233,16 @@ void LatResponseTests::psf_roi_integral() {
 
   bool integralFailures(false);
 
-  for (std::vector<std::string>::const_iterator name = irfNames.begin();
+  for (auto name = irfNames.begin();
        name != irfNames.end(); ++name) {
 
     irfInterface::Irfs * myIrfs(m_irfsFactory->create(*name));
     irfInterface::IPsf & psf(*myIrfs->psf());
     
-    for (std::vector<double>::const_iterator energy = energies.begin();
+    for (auto energy = energies.begin();
 	 energy != energies.end(); ++energy) {
 
-      for (std::vector<double>::const_iterator theta = thetas.begin();
+      for (auto theta = thetas.begin();
 	   theta != thetas.end(); ++theta) {
 
 	double angIntRef = integrate_psf(psf,*cone,*energy,*theta,phi,time,nstep);
@@ -309,7 +309,7 @@ void LatResponseTests::psf_normalization() {
 
    bool integralFailures(false);
 
-   for (std::vector<std::string>::const_iterator name = m_irfNames.begin();
+   for (auto name = m_irfNames.begin();
         name != m_irfNames.end(); ++name) {
       std::cout << *name << ": \n";
       if (*name == "P6_V7_TRANSIENT::FRONT" || 
@@ -323,9 +323,9 @@ void LatResponseTests::psf_normalization() {
       const irfInterface::IPsf & psf(*myIrfs->psf());
       
       size_t jjj(0);
-      for (std::vector<double>::const_iterator energy = energies.begin();
+      for (auto energy = energies.begin();
            energy != energies.end(); ++energy) {
-         for (std::vector<double>::const_iterator theta = thetas.begin();
+         for (auto theta = thetas.begin();
               theta != thetas.end(); ++theta, jjj++) {
            
             std::vector<double> psf_values;

@@ -25,7 +25,7 @@
 
 namespace {
    auto binIndex(double x, const std::vector<double> & xx) -> size_t {
-      std::vector<double>::const_iterator ix = 
+      auto ix = 
          std::upper_bound(xx.begin(), xx.end(), x);
       return ix - xx.begin();
    }
@@ -37,7 +37,7 @@ Edisp2::Edisp2(const std::string & fitsfile,
                const std::string & extname, size_t nrow) 
    : m_parTables(fitsfile, extname, nrow), m_loge_last(0), m_costh_last(0),
      m_renormalized(false), m_fitsfile(fitsfile), m_extname(extname),
-     m_nrow(nrow), m_interpolator(0) {
+     m_nrow(nrow), m_interpolator(nullptr) {
    readScaling(fitsfile);
 }
 
@@ -106,7 +106,7 @@ auto Edisp2::value(double appEnergy, double energy,
       double * my_pars(pars(energy, costh));
       return evaluate(appEnergy, energy, theta, phi, time, my_pars);
    }
-   if (m_interpolator == 0) {
+   if (m_interpolator == nullptr) {
       m_interpolator = new EdispInterpolator(m_fitsfile, m_extname, m_nrow);
    }
    return m_interpolator->evaluate(*this, appEnergy, energy,
@@ -134,7 +134,7 @@ auto Edisp2::old_function(double xx, double * pars) const -> double {
 }
 
 auto Edisp2::scaleFactor(double logE, double costh) const -> double {
-   if (!IrfLoader::interpolate_edisp() && m_interpolator==0) {
+   if (!IrfLoader::interpolate_edisp() && m_interpolator==nullptr) {
       // Use midpoint of logE, costh bins in the FITS tabulations
       // instead of the passed values.  This ensures correct
       // normalization via the renormalize() member function. Note

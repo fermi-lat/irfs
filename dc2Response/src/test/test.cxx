@@ -68,7 +68,7 @@ auto main(int argc, char* argv[]) -> int {
       dc2Response::load_irfs();
       irfInterface::IrfsFactory * myFactory 
          = irfInterface::IrfsFactory::instance();
-      irfInterface::Irfs * myIrfs(0);
+      irfInterface::Irfs * myIrfs(nullptr);
       myIrfs = myFactory->create("DC2::FrontA");
       double totalAeff(0);
       std::cout << "FrontA: " << myIrfs->aeff()->upperLimit() << std::endl;

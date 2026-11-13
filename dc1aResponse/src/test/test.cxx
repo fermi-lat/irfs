@@ -90,7 +90,7 @@ void test_psf(int iargc, char * argv[]) {
    astro::SkyDir srcDir(180+inclination, 0);
    double energy(1000.);
 
-   irfInterface::AcceptanceCone * roiCone = 
+   auto * roiCone = 
       new irfInterface::AcceptanceCone(scZAxis, radius);
    std::vector<irfInterface::AcceptanceCone *> cones;
    cones.push_back(roiCone);

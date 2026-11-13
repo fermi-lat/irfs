@@ -87,9 +87,9 @@ void Bilinear::getCorners(double x, double y,
                           double * corner_xvals,
                           double * corner_yvals,
                           double * zvals) const {
-   typedef std::vector<double>::const_iterator const_iterator_t;
+   using const_iterator_t = std::vector<double>::const_iterator;
 
-   const_iterator_t ix(std::upper_bound(m_x.begin(), m_x.end(), x));
+   auto ix(std::upper_bound(m_x.begin(), m_x.end(), x));
    if (ix == m_x.end() && x != m_x.back()) {
       throw std::invalid_argument("Bilinear::operator: x out of range");
    }
@@ -100,7 +100,7 @@ void Bilinear::getCorners(double x, double y,
    }
    int i(ix - m_x.begin());
     
-   const_iterator_t iy(std::upper_bound(m_y.begin(), m_y.end(), y));
+   auto iy(std::upper_bound(m_y.begin(), m_y.end(), y));
    if (iy == m_y.end() && y != m_y.back()) {
       throw std::invalid_argument("Bilinear::operator: y out of range");
    }

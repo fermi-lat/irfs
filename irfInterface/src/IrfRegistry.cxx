@@ -14,10 +14,10 @@
 
 namespace irfInterface {
 
-IrfRegistry * IrfRegistry::s_instance(0);
+IrfRegistry * IrfRegistry::s_instance(nullptr);
 
 auto IrfRegistry::instance() -> IrfRegistry & {
-   if (s_instance == 0) {
+   if (s_instance == nullptr) {
       s_instance = new IrfRegistry();
    }
    return *s_instance;
@@ -51,7 +51,7 @@ void IrfRegistry::loadIrfs(const std::string & irfsName) {
 
 auto IrfRegistry::irfNames() const -> std::vector<std::string> {
    std::vector<std::string> names;
-   std::map<std::string, IrfLoader *>::const_iterator it(m_irfLoaders.begin());
+   auto it(m_irfLoaders.begin());
    for ( ; it != m_irfLoaders.end(); ++it) {
       names.push_back(it->first);
    }

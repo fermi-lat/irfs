@@ -45,7 +45,7 @@ namespace {
 namespace testResponse {
 
 Psf::Psf(const std::vector<double> & psfParams) 
-   : m_psfParams(psfParams), m_acceptanceCone(0), m_psfNorm(1.),
+   : m_psfParams(psfParams), m_acceptanceCone(nullptr), m_psfNorm(1.),
      m_haveAngularIntegrals(false) {
    computeCumulativeDist();
 }
@@ -59,7 +59,7 @@ Psf::Gint Psf::s_gfunc;
 Psf::Psf(const Psf &rhs) : IPsf(rhs) {
    m_psfParams = rhs.m_psfParams;
    if (!rhs.m_acceptanceCone) {
-      m_acceptanceCone = 0;
+      m_acceptanceCone = nullptr;
    } else {
       m_acceptanceCone 
          = new irfInterface::AcceptanceCone(*rhs.m_acceptanceCone);

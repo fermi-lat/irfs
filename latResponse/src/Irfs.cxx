@@ -18,7 +18,7 @@
 namespace latResponse {
 
 Irfs::Irfs(const std::string & irfName, const std::string & eventType)
-   : irfInterface::Irfs(0, 0, 0, 0), m_irfName(irfName),
+   : irfInterface::Irfs(nullptr, nullptr, nullptr, 0), m_irfName(irfName),
      m_eventType(eventType) {
    setIrfID(irfUtil::EventTypeMapper::instance().bitPos(irfName,
                                                         eventType).first);
@@ -30,7 +30,7 @@ Irfs::Irfs(const Irfs & other)
 }
 
 auto Irfs::aeff() -> irfInterface::IAeff * {
-   if (irfInterface::Irfs::aeff() == 0) {
+   if (irfInterface::Irfs::aeff() == nullptr) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::aeff(m_irfName, m_eventType));
       setAeff(IrfLoader::aeff(hdus));
    }
@@ -38,7 +38,7 @@ auto Irfs::aeff() -> irfInterface::IAeff * {
 }
 
 auto Irfs::efficiencyFactor() const -> const irfInterface::IEfficiencyFactor * {
-   if (irfInterface::Irfs::efficiencyFactor() == 0) {
+   if (irfInterface::Irfs::efficiencyFactor() == nullptr) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::aeff(m_irfName, m_eventType));
       irfInterface::IEfficiencyFactor * eff(IrfLoader::efficiency_factor(hdus));
       if (eff) {
@@ -50,7 +50,7 @@ auto Irfs::efficiencyFactor() const -> const irfInterface::IEfficiencyFactor * {
 }
 
 auto Irfs::psf() -> irfInterface::IPsf * {
-   if (irfInterface::Irfs::psf() == 0) {
+   if (irfInterface::Irfs::psf() == nullptr) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::psf(m_irfName, m_eventType));
       setPsf(IrfLoader::psf(hdus));
    }
@@ -58,7 +58,7 @@ auto Irfs::psf() -> irfInterface::IPsf * {
 }
 
 auto Irfs::edisp() -> irfInterface::IEdisp * {
-   if (irfInterface::Irfs::edisp() == 0) {
+   if (irfInterface::Irfs::edisp() == nullptr) {
       irfUtil::IrfHdus hdus(irfUtil::IrfHdus::edisp(m_irfName, m_eventType));
       setEdisp(IrfLoader::edisp(hdus));
    }

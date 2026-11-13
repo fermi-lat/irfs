@@ -56,11 +56,11 @@ IrfHdus::IrfHdus(const std::string & irf_name,
    m_bitPos = irfUtil::EventTypeMapper::instance().bitPos(irf_name, event_type).first;
 }
 
-typedef std::vector< std::pair<std::string, std::string> > FilenameHduPairs_t;
+using FilenameHduPairs_t = std::vector< std::pair<std::string, std::string> >;
 
 auto 
 IrfHdus::operator()(const std::string & cname) const -> const FilenameHduPairs_t & {
-   const std::map<std::string, FilenameHduPairs_t>::const_iterator 
+   const auto 
       it(m_file_hdus.find(cname));
    if (it == m_file_hdus.end()) {
       throw std::runtime_error("latResponse::IrfHdus: " + cname 

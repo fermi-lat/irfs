@@ -51,8 +51,7 @@
 #include "PsfEpochDep.h"
 
 namespace {
-   typedef std::map<std::string, std::pair<unsigned int, std::string> > 
-   EventTypeMapping_t;
+   using EventTypeMapping_t = std::map<std::string, std::pair<unsigned int, std::string> >;
 }
 
 namespace latResponse {
@@ -91,7 +90,7 @@ void IrfLoader::registerEventClasses(const std::string & irfName) const {
 
    for (size_t ip(0); ip < partitions.size(); ip++) {
       std::vector<std::string> classNames;
-      EventTypeMapping_t::const_iterator it(event_type_mapping.begin());
+      auto it(event_type_mapping.begin());
       for ( ; it != event_type_mapping.end(); ++it) {
          if (it->second.second == partitions[ip]) {
             classNames.push_back(irfName + "::" + it->first);
@@ -126,7 +125,7 @@ void IrfLoader::loadIrfs(const std::string & irfName) const {
    }
    const EventTypeMapping_t & event_type_mapping =
       irfUtil::EventTypeMapper::instance().mapping(irfName);
-   EventTypeMapping_t::const_iterator it(event_type_mapping.begin());
+   auto it(event_type_mapping.begin());
    for ( ; it != event_type_mapping.end(); ++it) {
       addIrfs(irfName, it->first);
    }
@@ -151,7 +150,7 @@ IrfLoader::aeff(const irfUtil::IrfHdus & aeff_hdus) -> irfInterface::IAeff * {
    if (aeff_hdus.numEpochs() == 1) {
       return new Aeff(aeff_hdus, 0);
    } else {
-      AeffEpochDep * my_aeff(new AeffEpochDep());
+      auto * my_aeff(new AeffEpochDep());
       const std::vector<std::pair<std::string, std::string> > &
          filename_hdu_pairs(aeff_hdus("EFF_AREA"));
       for (size_t j(0); j < aeff_hdus.numEpochs(); j++) {
@@ -163,7 +162,7 @@ IrfLoader::aeff(const irfUtil::IrfHdus & aeff_hdus) -> irfInterface::IAeff * {
       }
       return my_aeff;
    }
-   return 0;
+   return nullptr;
 }
 
 auto 
@@ -171,7 +170,7 @@ IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus) -> irfInterface::IPsf * {
    if (psf_hdus.numEpochs() == 1) {
       return psf(psf_hdus, 0);
    } else {
-      PsfEpochDep * my_psf(new PsfEpochDep());
+      auto * my_psf(new PsfEpochDep());
       const std::vector<std::pair<std::string, std::string> > &
          filename_hdu_pairs(psf_hdus("RPSF"));
       for (size_t j(0); j < psf_hdus.numEpochs(); j++) {
@@ -183,7 +182,7 @@ IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus) -> irfInterface::IPsf * {
       }
       return my_psf;
    }
-   return 0;
+   return nullptr;
 }
 
 auto IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus, 
@@ -206,7 +205,7 @@ auto IrfLoader::psf(const irfUtil::IrfHdus & psf_hdus,
    default:
       throw std::runtime_error("PSF version not found.");
    }
-   return 0;
+   return nullptr;
 }
 
 auto 
@@ -214,7 +213,7 @@ IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus) -> irfInterface::IEdisp * 
    if (edisp_hdus.numEpochs() == 1) {
       return edisp(edisp_hdus, 0);
    } else {
-      EdispEpochDep * my_edisp(new EdispEpochDep());
+      auto * my_edisp(new EdispEpochDep());
       const std::vector<std::pair<std::string, std::string> > &
          filename_hdu_pairs(edisp_hdus("EDISP"));
       for (size_t j(0); j < edisp_hdus.numEpochs(); j++) {
@@ -226,7 +225,7 @@ IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus) -> irfInterface::IEdisp * 
       }
       return my_edisp;
    }
-   return 0;
+   return nullptr;
 }
 
 auto 
@@ -248,12 +247,12 @@ IrfLoader::edisp(const irfUtil::IrfHdus & edisp_hdus, size_t iepoch) -> irfInter
    default:
       throw std::runtime_error("EDISP version not found.");
    }
-   return 0;
+   return nullptr;
 }
 
 auto
 IrfLoader::efficiency_factor(const irfUtil::IrfHdus & aeff_hdus) -> irfInterface::IEfficiencyFactor * {
-   irfInterface::IEfficiencyFactor * my_eff(0);
+   irfInterface::IEfficiencyFactor * my_eff(nullptr);
    if (aeff_hdus.numEpochs() == 1) {
       my_eff = new EfficiencyFactor(aeff_hdus, 0);
    } else {

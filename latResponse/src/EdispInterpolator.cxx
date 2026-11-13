@@ -47,8 +47,7 @@ EdispInterpolator::EdispInterpolator(const std::string & fitsfile,
    readFits();
 }
 
-EdispInterpolator::~EdispInterpolator() throw() {
-}
+EdispInterpolator::~EdispInterpolator() throw() = default;
 
 void EdispInterpolator::readFits() {
    tip::IFileSvc & fileSvc(tip::IFileSvc::instance());
@@ -202,9 +201,9 @@ void EdispInterpolator::getCornerPars(double energy, double theta,
 }
 
 auto EdispInterpolator::findIndex(const std::vector<double> & xx, double x) -> int {
-   typedef std::vector<double>::const_iterator const_iterator_t;
+   using const_iterator_t = std::vector<double>::const_iterator;
 
-   const_iterator_t ix(std::upper_bound(xx.begin(), xx.end(), x));
+   auto ix(std::upper_bound(xx.begin(), xx.end(), x));
    if (ix == xx.end() && x != xx.back()) {
       std::cout << xx.front() << "  "
                 << x << "  "
@@ -226,8 +225,8 @@ auto EdispInterpolator::params(size_t indx) const -> std::vector<double> {
     throw std::runtime_error("Parameter index out of range.");
 
   std::vector<double> vals(m_parVectors.size(),0.0);
-  std::vector< std::vector<double> >::const_iterator itr0 = m_parVectors.begin();
-  std::vector<double>::iterator itr1 = vals.begin();
+  auto itr0 = m_parVectors.begin();
+  auto itr1 = vals.begin();
   for( ;itr0 != m_parVectors.end() && itr1 != vals.end();
        ++itr0, ++itr1)
     *itr1 = (*itr0)[indx];
@@ -242,8 +241,8 @@ void EdispInterpolator::setParams(size_t indx, const std::vector<double>& params
   else if(params.size() != m_parVectors.size())
     throw std::runtime_error("Wrong size for parameter array.");
 
-  std::vector<double>::const_iterator itr0 = params.begin();
-  std::vector< std::vector<double> >::iterator itr1 = m_parVectors.begin();
+  auto itr0 = params.begin();
+  auto itr1 = m_parVectors.begin();
 
   m_renormalized = false;
 

@@ -24,7 +24,8 @@ AeffDC1::AeffDC1(const std::string &filename, int hdu)
    read_FITS_table();
 }
 
-AeffDC1::~AeffDC1() {}
+// AeffDC1::~AeffDC1() {}
+AeffDC1::~AeffDC1() = default;
 
 AeffDC1::AeffDC1(const AeffDC1 &rhs) 
    : IAeff(rhs), DC1(rhs), m_aeffTable(rhs.m_aeffTable),

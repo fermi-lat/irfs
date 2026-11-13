@@ -35,10 +35,10 @@ Psf2::Psf2(const std::string & fitsfile, bool isFront,
    : Psf(fitsfile, isFront, extname, nrow) {
 }
 
+// Psf2::Psf2(const Psf2 & rhs) : = default;
 Psf2::Psf2(const Psf2 & rhs) : Psf(rhs) {}
 
-Psf2::~Psf2() {
-}
+Psf2::~Psf2() = default;
 
 auto Psf2::value(double separation, double energy, double theta,
                   double phi, double time) const -> double {

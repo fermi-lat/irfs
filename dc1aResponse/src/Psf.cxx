@@ -31,7 +31,7 @@ using CLHEP::Hep3Vector;
 namespace dc1aResponse {
 
 Psf::Psf(const std::vector<double> & psfParams) 
-   : m_psfParams(psfParams), m_acceptanceCone(0),
+   : m_psfParams(psfParams), m_acceptanceCone(nullptr),
      m_haveAngularIntegrals(false) {
    m_p2 = p2(m_psfParams.at(4));
    computeCumulativeDist();
@@ -47,7 +47,7 @@ Psf::Psf(const Psf &rhs) : IPsf(rhs) {
    m_psfParams = rhs.m_psfParams;
    m_p2 = rhs.m_p2;
    if (!rhs.m_acceptanceCone) {
-      m_acceptanceCone = 0;
+      m_acceptanceCone = nullptr;
    } else {
       m_acceptanceCone 
          = new irfInterface::AcceptanceCone(*rhs.m_acceptanceCone);

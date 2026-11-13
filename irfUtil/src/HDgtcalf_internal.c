@@ -40,21 +40,21 @@ int dt2mjd (const char* date, double * mjd, int * status) {
 
     if( strcasecmp(date,"NOW") == 0 ) {
          if(ffgsdt(&id,&im,&iy,status)) {
-             sprintf(msg,"Error get system date");
+             snprintf(msg, sizeof(msg), "Error get system date");
              HD_ERROR_THROW(msg,*status); 
              return *status;
          }
     } 
     else {
          if(ffs2dt((char*) date,&iy,&im,&id,status)) {
-             sprintf(msg,"Error parse date");
+             snprintf(msg, sizeof(msg), "Error parse date");
              HD_ERROR_THROW(msg,*status); 
              return *status;
          }
     }
             
     if(ccldj(iy,im,id,mjd,status)) {
-             sprintf(msg,"Error convert date to mjd");
+             snprintf(msg, sizeof(msg), "Error convert date to mjd");
              HD_ERROR_THROW(msg,*status); 
              return *status;
     }
@@ -74,19 +74,19 @@ int tim2df(const char * time, double * dayfrac, int * status) {
 
         if(strcasecmp(time,"NOW") == 0 ) {
            if(ffgstm(time1,&timeref,status)) {
-               sprintf(msg,"Error get system date & time string");
+               snprintf(msg, sizeof(msg), "Error get system date & time string");
                HD_ERROR_THROW(msg,*status); 
                return *status;
            }
            if (ffs2tm(time1,NULL,NULL,NULL,&hour,&min,&second,status)){
-               sprintf(msg,"Error parse time");
+               snprintf(msg, sizeof(msg), "Error parse time");
                HD_ERROR_THROW(msg,*status); 
                return *status;
            }
         }
 	else {
            if(ffs2tm((char*) time,NULL,NULL,NULL,&hour,&min,&second,status)) {
-               sprintf(msg,"Error parse time");
+               snprintf(msg, sizeof(msg), "Error parse time");
                HD_ERROR_THROW(msg,*status); 
 	       return *status;
            }
@@ -108,7 +108,7 @@ static int ccldj (int iy, int im, int id, double * djm, int *status) {
 
     if( iy < -4699 ) {
 	 *status =CLDJ_ERR_BAD_YEAR;
-         sprintf(msg,"Error convert date & time to mjd: bad year");
+         snprintf(msg, sizeof(msg), "Error convert date & time to mjd: bad year");
          HD_ERROR_THROW(msg,*status); 
 	 return *status;
     }
@@ -122,7 +122,7 @@ static int ccldj (int iy, int im, int id, double * djm, int *status) {
 
         if(id < 1 || id > mtab[im-1] ) {
 	    *status =CLDJ_ERR_BAD_DAY;
-            sprintf(msg,"Error convert date & time to mjd: bad day");
+            snprintf(msg, sizeof(msg), "Error convert date & time to mjd: bad day");
             HD_ERROR_THROW(msg,*status); 
 	    return *status;
         }
@@ -133,7 +133,7 @@ static int ccldj (int iy, int im, int id, double * djm, int *status) {
         *djm +=id-2399904;
     } else {
         *status =CLDJ_ERR_BAD_MONTH;
-         sprintf(msg,"Error convert date & time to mjd: bad month");
+         snprintf(msg, sizeof(msg), "Error convert date & time to mjd: bad month");
          HD_ERROR_THROW(msg,*status); 
          return *status;
     }
@@ -184,7 +184,7 @@ int cpthnm(const char* disk, const char* dir, char* file,
          }
          else {
              *status =HD_ERR_NULL_POINTER;
-             sprintf(msg,"Error get path name: dir is NULL string");
+             snprintf(msg, sizeof(msg), "Error get path name: dir is NULL string");
              HD_ERROR_THROW(msg,*status); 
          } 
              
@@ -206,7 +206,7 @@ int cpthnm(const char* disk, const char* dir, char* file,
 	}
         else {
             *status =HD_ERR_NULL_POINTER;
-            sprintf(msg,"Error get file name: file is NULL string");
+            snprintf(msg, sizeof(msg), "Error get file name: file is NULL string");
             HD_ERROR_THROW(msg,*status); 
         } 
         strcpy(file,path);

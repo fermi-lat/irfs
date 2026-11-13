@@ -16,10 +16,10 @@
 
 namespace irfInterface {
 
-IrfsFactory * IrfsFactory::s_instance(0);
+IrfsFactory * IrfsFactory::s_instance(nullptr);
 
 auto IrfsFactory::instance() -> IrfsFactory * {
-   if (s_instance == 0) {
+   if (s_instance == nullptr) {
       s_instance = new IrfsFactory();
    }
    return s_instance;
@@ -27,11 +27,11 @@ auto IrfsFactory::instance() -> IrfsFactory * {
 
 void IrfsFactory::delete_instance() {
    delete s_instance;
-   s_instance = 0;
+   s_instance = nullptr;
 }
 
 IrfsFactory::~IrfsFactory() {
-   std::map<std::string, Irfs *>::iterator itor = m_prototypes.begin();
+   auto itor = m_prototypes.begin();
    for ( ; itor != m_prototypes.end(); ++itor) {
       delete itor->second;
    }
@@ -39,7 +39,7 @@ IrfsFactory::~IrfsFactory() {
 }
 
 auto IrfsFactory::create(const std::string & name) const -> Irfs * {
-   std::map<std::string, Irfs *>::const_iterator itor 
+   auto itor 
       = m_prototypes.find(name);
    if (itor == m_prototypes.end()) {
       std::string message("irfInterface::IrfsFactory::create: ");

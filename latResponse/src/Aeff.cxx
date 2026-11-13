@@ -26,7 +26,7 @@ Aeff::Aeff(const irfUtil::IrfHdus & irf_hdus, size_t iepoch, size_t nrow)
    : m_aeffTable(irf_hdus("EFF_AREA").at(iepoch).first,
                  irf_hdus("EFF_AREA").at(iepoch).second,
                  "EFFAREA", nrow),
-     m_phiDepPars(0) {
+     m_phiDepPars(nullptr) {
    m_usePhiDependence = false;
    try {
       m_phiDepPars = new ParTables(irf_hdus("PHI_DEP").at(iepoch).first,
@@ -40,11 +40,11 @@ Aeff::Aeff(const irfUtil::IrfHdus & irf_hdus, size_t iepoch, size_t nrow)
 Aeff::Aeff(const std::string & fitsfile, const std::string & extname,
            size_t nrow)
    : m_aeffTable(fitsfile, extname, "EFFAREA", nrow),
-     m_phiDepPars(0) {
+     m_phiDepPars(nullptr) {
    try {
       m_phiDepPars = new ParTables(fitsfile, "PHI_DEPENDENCE", nrow);
    } catch (tip::TipException & eObj) {
-      m_phiDepPars = 0;
+      m_phiDepPars = nullptr;
    }
    if (m_phiDepPars) {
       m_usePhiDependence = true;
@@ -56,8 +56,8 @@ Aeff::Aeff(const std::string & fitsfile, const std::string & extname,
 Aeff::Aeff(const Aeff & other) 
    : irfInterface::IAeff(other),
      m_aeffTable(other.m_aeffTable),
-     m_phiDepPars(0) {
-   if (other.m_phiDepPars != 0) {
+     m_phiDepPars(nullptr) {
+   if (other.m_phiDepPars != nullptr) {
       m_phiDepPars = new ParTables(*other.m_phiDepPars);
    }
 }
@@ -67,8 +67,8 @@ auto Aeff::operator=(const Aeff & rhs) -> Aeff & {
       irfInterface::IAeff::operator=(rhs);
       m_aeffTable = rhs.m_aeffTable;
       delete m_phiDepPars;
-      m_phiDepPars = 0;
-      if (rhs.m_phiDepPars != 0) {
+      m_phiDepPars = nullptr;
+      if (rhs.m_phiDepPars != nullptr) {
          m_phiDepPars = new ParTables(*rhs.m_phiDepPars);
       }
    }

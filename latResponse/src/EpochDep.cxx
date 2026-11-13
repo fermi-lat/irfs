@@ -66,7 +66,7 @@ auto EpochDep::index(double met) const -> size_t {
    } else if (met >= m_epochStart.back()) {
       m_curr_index = m_epochStart.size() - 1;
    } else {
-      std::vector<double>::const_iterator it 
+      auto it 
          =  std::upper_bound(m_epochStart.begin(), m_epochStart.end(), met);
       m_curr_index = it - m_epochStart.end() - 1;
    }

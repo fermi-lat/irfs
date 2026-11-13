@@ -11,8 +11,7 @@
 
 namespace latResponse {
 
-EdispEpochDep::EdispEpochDep() {
-}
+EdispEpochDep::EdispEpochDep() = default;
 
 EdispEpochDep::EdispEpochDep(const EdispEpochDep & other) 
    : irfInterface::IEdisp(other), EpochDep(other) {

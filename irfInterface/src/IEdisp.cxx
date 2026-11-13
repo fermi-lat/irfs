@@ -41,9 +41,9 @@ auto IEdisp::value(const std::vector<double>& appEnergy,
 
   std::vector<double> vals;
   vals.reserve(appEnergy.size());
-  std::vector<double>::const_iterator itr0 = appEnergy.begin();
-  std::vector<double>::const_iterator itr1 = energy.begin();
-  std::vector<double>::const_iterator itr2 = theta.begin();  
+  auto itr0 = appEnergy.begin();
+  auto itr1 = energy.begin();
+  auto itr2 = theta.begin();  
   for(; (itr0 != appEnergy.end()) && (itr1 != energy.end()) && 
 	(itr2 != theta.end()); 
       ++itr0, ++itr1, ++itr2) {
@@ -69,7 +69,7 @@ auto IEdisp::appEnergy(double energy,
    ::fill_energies(emin, emax, nee, energies);
    
    std::vector<double> integrand;
-   for (std::vector<double>::iterator appE(energies.begin());
+   for (auto appE(energies.begin());
         appE != energies.end(); ++appE) {
       integrand.push_back(value(*appE, energy, theta, phi, time));
    }

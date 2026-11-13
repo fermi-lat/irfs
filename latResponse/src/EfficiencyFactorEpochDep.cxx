@@ -11,8 +11,7 @@
 
 namespace latResponse {
 
-EfficiencyFactorEpochDep::EfficiencyFactorEpochDep() {
-}
+EfficiencyFactorEpochDep::EfficiencyFactorEpochDep() = default;
 
 EfficiencyFactorEpochDep::
 EfficiencyFactorEpochDep(const EfficiencyFactorEpochDep & other) 

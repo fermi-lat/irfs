@@ -64,7 +64,7 @@ int HDgtcalf(const char* tele, const char* instr,
          expr == NULL)  
      {
          *status =HD_ERR_NULL_POINTER;
-         sprintf(msg,"Input parameter string is NULL");
+         snprintf(msg,sizeof(msg), "Input parameter string is NULL");
          HD_ERROR_THROW(msg,*status); 
 	 goto cleanup;
      }
@@ -73,7 +73,7 @@ int HDgtcalf(const char* tele, const char* instr,
      /* Get CALDB index file */
 
      if(gtcalidx("INST",(char*) tele,(char*) instr,cif,instdir,status)) {
-        sprintf(msg,"Problem getting caldb index file");
+        snprintf(msg,sizeof(msg), "Problem getting caldb index file");
         HD_ERROR_THROW(msg,*status); 
         goto cleanup;
      }
@@ -87,7 +87,7 @@ int HDgtcalf(const char* tele, const char* instr,
      } 
      else {
         if(dt2mjd(strtdate,&djm,status)) {
-            sprintf(msg,"Unable to determine MJD from startdate string");
+            snprintf(msg, sizeof(msg), "Unable to determine MJD from startdate string");
             HD_ERROR_THROW(msg,*status); 
             goto cleanup;
         }
@@ -99,7 +99,7 @@ int HDgtcalf(const char* tele, const char* instr,
      } 
      else {
         if(tim2df(strtime,&dayfrac,status)) {
-            sprintf(msg,"Unable to determine fraction of day from startime string");
+            snprintf(msg, sizeof(msg), "Unable to determine fraction of day from startime string");
             HD_ERROR_THROW(msg,*status); 
             goto cleanup;
         }
@@ -112,7 +112,7 @@ int HDgtcalf(const char* tele, const char* instr,
      } 
      else {
         if(dt2mjd(stpdate,&djm,status)) {
-            sprintf(msg,"Unable to determine MJD from stopdate string");
+            snprintf(msg, sizeof(msg), "Unable to determine MJD from stopdate string");
             HD_ERROR_THROW(msg,*status); 
             goto cleanup;
         }
@@ -124,7 +124,7 @@ int HDgtcalf(const char* tele, const char* instr,
      } 
      else {
         if(tim2df(stptime,&dayfrac,status)) {
-            sprintf(msg,"Unable to determine fraction of day from stoptime string");
+            snprintf(msg, sizeof(msg), "Unable to determine fraction of day from stoptime string");
             HD_ERROR_THROW(msg,*status); 
             goto cleanup;
         }
@@ -138,7 +138,7 @@ int HDgtcalf(const char* tele, const char* instr,
      if(gtcalf_work(cif,tele,instr,detnam,filt,codenam,
          startreftime,stopreftime,expr,maxret, fnamesize,
          filenam,extno,online,nret,nfound,status)) {
-         sprintf(msg,"Fail to select CALDB file with the given criteria");
+         snprintf(msg,sizeof(msg), "Fail to select CALDB file with the given criteria");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
      } 
@@ -191,27 +191,27 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     
     
     if (parseCBD2(expr,&list1,status) ) {
-        sprintf(msg,"Parse boolean expression error");
+        snprintf(msg, sizeof(msg), "Parse boolean expression error");
         HD_ERROR_THROW(msg,*status); 
         goto cleanup;
     }
 
 
     if (fits_open_table(&fptr, cif, READONLY, status)) {
-        sprintf(msg,"Unable to open CALDB index file");
+        snprintf(msg, sizeof(msg), "Unable to open CALDB index file");
         HD_ERROR_THROW(msg,*status); 
         goto cleanup;
      }
 
     if (ffgkyj(fptr,"NAXIS2",&nax2val,NULL,status)) {
-        sprintf(msg,"Problem reading NAXIS2 of CIF");
+        snprintf(msg,sizeof(msg), "Problem reading NAXIS2 of CIF");
         HD_ERROR_THROW(msg,*status); 
         goto cleanup;
     }
 
     if( nax2val == 0 ) {
          *status = CIF_ERR_EMPTY_TABLE;
-         sprintf(msg,"CIF table is empty");
+         snprintf(msg, sizeof(msg), "CIF table is empty");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -225,13 +225,13 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 
     
     if( ffgcno(fptr,1,"TELESCOP",&telcol,status)) {
-         sprintf(msg,"Unable to find TELESCOP column");
+         snprintf(msg, sizeof(msg), "Unable to find TELESCOP column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,telcol,&dw,status)) {
-         sprintf(msg,"Unable to find TELESCOP column display width");
+         snprintf(msg, sizeof(msg), "Unable to find TELESCOP column display width");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
@@ -241,13 +241,13 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 
    
     if( ffgcno(fptr,1,"INSTRUME",&inscol,status)) {
-         sprintf(msg,"Unable to find INSTRUME column");
+         snprintf(msg, sizeof(msg), "Unable to find INSTRUME column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,inscol,&dw,status)) {
-         sprintf(msg,"Unable to find INSTRUME column display width");
+         snprintf(msg, sizeof(msg), "Unable to find INSTRUME column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -256,13 +256,13 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     }
 
     if( ffgcno(fptr,1,"DETNAM",&detcol,status)) {
-         sprintf(msg,"Unable to find DETNAM column");
+         snprintf(msg,sizeof(msg), "Unable to find DETNAM column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,detcol,&dw,status)) {
-         sprintf(msg,"Unable to find DETNAM column display width");
+         snprintf(msg,sizeof(msg), "Unable to find DETNAM column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -271,13 +271,13 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     }
 
     if( ffgcno(fptr,1,"FILTER",&filtcol,status)) {
-         sprintf(msg,"Unable to find FILTER column");
+         snprintf(msg,sizeof(msg), "Unable to find FILTER column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,filtcol,&dw,status)) {
-         sprintf(msg,"Unable to find FILTER column display width");
+         snprintf(msg, sizeof(msg), "Unable to find FILTER column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -286,12 +286,12 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     }
 
     if( ffgcno(fptr,1,"CAL_CNAM",&codcol,status)) {
-         sprintf(msg,"Unable to find CAL_CNAM column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_CNAM column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
     if(ffgcdw(fptr,codcol,&dw,status)) {
-         sprintf(msg,"Unable to find CAL_CNAM column display width");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_CNAM column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -300,32 +300,32 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     }
 
     if( ffgcno(fptr,1,"REF_TIME",&refcol,status)) {
-         sprintf(msg,"Unable to find REF_TIME column");
+         snprintf(msg,sizeof(msg), "Unable to find REF_TIME column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if( ffgcno(fptr,1,"CAL_QUAL",&qulcol,status)) {
-         sprintf(msg,"Unable to find CAL_QUAL column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_QUAL column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if( ffgcno(fptr,1,"CAL_DEV",&devcol,status)) {
-         sprintf(msg,"Unable to find CAL_DEV column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_DEV column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
 
     if( ffgcno(fptr,1,"CAL_DIR",&dircol,status)) {
-         sprintf(msg,"Unable to find CAL_DIR column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_DIR column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,dircol,&dw,status)) {
-         sprintf(msg,"Unable to find CAL_DIR column display width");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_DIR column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -335,25 +335,25 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 
 
     if( ffgcno(fptr,1,"CAL_FILE",&filcol,status)) {
-         sprintf(msg,"Unable to find CAL_FILE column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_FILE column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if( ffgcno(fptr,1,"CAL_XNO",&extcol,status)) {
-         sprintf(msg,"Unable to find CAL_XNO column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_XNO column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if( ffgcno(fptr,1,"CAL_CBD",&cbdcol,status)) {
-         sprintf(msg,"Unable to find CAL_CBD column");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_CBD column");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
     }
 
     if(ffgcdw(fptr,cbdcol,&dw,status)) {
-         sprintf(msg,"Unable to find CAL_CBD column display width");
+         snprintf(msg, sizeof(msg), "Unable to find CAL_CBD column display width");
          HD_ERROR_THROW(msg,*status);
          goto cleanup;
     }
@@ -364,13 +364,13 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
     for ( i =0; i < nax2val; i++ ) {
 
          if( ffgcvs(fptr,telcol,i+1,1,1," ",&telval,&anynull,status) ) {
-                sprintf(msg,"Error reading TELCOL column");
+                snprintf(msg,sizeof(msg), "Error reading TELCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
          }
          
          if( ffgcvs(fptr,inscol,i+1,1,1," ",&insval,&anynull,status) ) {
-                sprintf(msg,"Error reading INSCOL column");
+                snprintf(msg, sizeof(msg), "Error reading INSCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
          }
@@ -381,7 +381,7 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 	 else {
 		if(ffgcvs(fptr,detcol,i+1,1,1," ",&detval,
                      &anynull,status) ) {
-                        sprintf(msg,"Error reading DETCOL column");
+                        snprintf(msg, sizeof(msg), "Error reading DETCOL column");
                         HD_ERROR_THROW(msg,*status); 
                         goto cleanup;
 		}
@@ -393,7 +393,7 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 	 else {
 		if(ffgcvs(fptr,filtcol,i+1,1,1," ",&filtval,
                      &anynull,status)) {
-                        sprintf(msg,"Error reading FILCOL column");
+                        snprintf(msg, sizeof(msg), "Error reading FILCOL column");
                         HD_ERROR_THROW(msg,*status); 
                         goto cleanup;
 		}
@@ -401,19 +401,19 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 
 
          if( ffgcvs(fptr,codcol,i+1,1,1," ",&codval,&anynull,status) ) {
-                sprintf(msg,"Error reading CODCOL column");
+                snprintf(msg, sizeof(msg), "Error reading CODCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
          }
 
          if( ffgcvd(fptr,refcol,i+1,1,1,0.0,&(refval[i]),&anynull,status) ) {
-                sprintf(msg,"Error reading REFCOL column");
+                snprintf(msg, sizeof(msg), "Error reading REFCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
          }
 
          if( ffgcvd(fptr,qulcol,i+1,1,1,0,&qulval,&anynull,status) ) {
-                sprintf(msg,"Error reading QULCOL column");
+                snprintf(msg, sizeof(msg), "Error reading QULCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
          }
@@ -434,7 +434,7 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
         else index[i] =0;
 
         if(fits_get_coltype(fptr,cbdcol, &typecode,&repeat,&width,status)) {
-                sprintf(msg,"Error reading CBDCOL column type");
+                snprintf(msg, sizeof(msg), "Error reading CBDCOL column type");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
         }
@@ -445,7 +445,7 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
         for( k=1; k<=cbdnelem; k++) {
             if( ffgcvs(fptr,cbdcol,i+1,k,1," ",&cbdval,&anynull,status) ) {
                 cbdval ="none";
-                sprintf(msg,"Error reading CBDCOL column");
+                snprintf(msg,sizeof(msg), "Error reading CBDCOL column");
                 HD_ERROR_THROW(msg,*status); 
                 goto cleanup;
             }
@@ -453,7 +453,7 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
 	    if(list2) freecbd(list2);
             list2 = NULL;
             if(parseCBD(i,cbdval,&list2,status) ) {
-	       sprintf(msg,"Parse CDBnXXX error");
+	       snprintf(msg,sizeof(msg), "Parse CDBnXXX error");
                HD_ERROR_THROW(msg,*status); 
                goto cleanup;
              }
@@ -499,18 +499,18 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
        if(index[i] >0 ) {
          if( *nret < maxret ) {
          if( ffgcvs(fptr,dircol,i+1,1,1," ",&dirval,&anynull,status) ) {
-                sprintf(msg,"Error reading DIRCOL column");
+                snprintf(msg, sizeof(msg), "Error reading DIRCOL column");
                 HD_ERROR_THROW(msg,*status); 
 		goto cleanup;
          }
          if( ffgcvs(fptr,filcol,i+1,1,1," ",&tmpfile,&anynull,status) ) {
-                sprintf(msg,"Error reading FILCOL column");
+                snprintf(msg,sizeof(msg), "Error reading FILCOL column");
                 HD_ERROR_THROW(msg,*status); 
 		goto cleanup;
          }
 
          if(cpthnm(caldbvar,dirval,tmpfile,status)) {
-                sprintf(msg,"Fail to get path name");
+                snprintf(msg, sizeof(msg), "Fail to get path name");
                 HD_ERROR_THROW(msg,*status); 
 		goto cleanup;
          }
@@ -520,12 +520,12 @@ static int gtcalf_work(char* cif, const char* tele, const char* instr,
          file[*nret][fnamesize - 1] = 0;
 
          if( ffgcvj(fptr,extcol,i+1,1,1,0,extno+*nret,&anynull,status) ) {
-                sprintf(msg,"Error reading EXTLCOL column");
+                snprintf(msg, sizeof(msg), "Error reading EXTLCOL column");
                 HD_ERROR_THROW(msg,*status); 
 		goto cleanup;
          }
          if( ffgcvs(fptr,devcol,i+1,1,1," ",&online[*nret],&anynull,status) ) {
-                sprintf(msg,"Error reading DEVCOL column");
+                snprintf(msg, sizeof(msg), "Error reading DEVCOL column");
                 HD_ERROR_THROW(msg,*status); 
 		goto cleanup;
          }
@@ -591,7 +591,7 @@ static int gtcalidx (char* mode, char* missn,
 
      if( caldb == NULL || caldb[0] == '\0' ) {
          *status = HD_ERR_NULL_POINTER;
-         sprintf(msg,"CALDB environment variable not set");
+         snprintf(msg, sizeof(msg), "CALDB environment variable not set");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
      }
@@ -600,7 +600,7 @@ static int gtcalidx (char* mode, char* missn,
 
      if( config == NULL || config[0] =='\0') {
          *status = HD_ERR_NULL_POINTER;
-         sprintf(msg,"CALDBCONFIG environment variable not set");
+         snprintf(msg,sizeof(msg), "CALDBCONFIG environment variable not set");
          HD_ERROR_THROW(msg,*status); 
          goto cleanup;
      }
@@ -610,20 +610,20 @@ static int gtcalidx (char* mode, char* missn,
       do {
       		if( rdcnfgl(fptr,missval,instval,cifdev,cifdir,ciffil,
        		     insdev,insdir,status) ) {
-                        sprintf(msg,"Problem reading CALDB config file");
+                        snprintf(msg, sizeof(msg), "Problem reading CALDB config file");
                         HD_ERROR_THROW(msg,*status); 
 			goto cleanup;
                 }
 	        if( strcasecmp(missn,missval) == 0 ) {
 		        if(strcasecmp(instval,inst) == 0 ) {
              			if(cpthnm(cifdev,cifdir,ciffil,status)) {
-                                       sprintf(msg,"Problem getting cif");
+                                       snprintf(msg, sizeof(msg), "Problem getting cif");
                                        HD_ERROR_THROW(msg,*status); 
 			               goto cleanup;
                                  }
                                 strcpy(instdir,"");
              			if(cpthnm(insdev,insdir,instdir,status)) {
-                                       sprintf(msg,"Problem getting instdir");
+                                       snprintf(msg,sizeof(msg), "Problem getting instdir");
                                        HD_ERROR_THROW(msg,*status); 
 			               goto cleanup;
              			}

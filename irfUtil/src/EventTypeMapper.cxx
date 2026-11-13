@@ -23,7 +23,7 @@
 
 namespace irfUtil {
 
-EventTypeMapper * EventTypeMapper::s_instance(0);
+EventTypeMapper * EventTypeMapper::s_instance(nullptr);
 
 EventTypeMapper::EventTypeMapper() {
    // Find the irf_index.fits file.
@@ -86,7 +86,7 @@ EventTypeMapper::EventTypeMapper() {
 }
 
 auto EventTypeMapper::instance() -> EventTypeMapper & {
-   if (s_instance == 0) {
+   if (s_instance == nullptr) {
       s_instance = new EventTypeMapper();
    }
    return *s_instance;
@@ -94,14 +94,14 @@ auto EventTypeMapper::instance() -> EventTypeMapper & {
 
 void EventTypeMapper::deleteInstance() {
    delete s_instance;
-   s_instance = 0;
+   s_instance = nullptr;
 }
 
 auto
 EventTypeMapper::bitPos(const std::string & irfName,
                         const std::string & event_type) const -> const std::pair<unsigned int, std::string> & {
    const EvTypeMapping_t & my_mapping = mapping(irfName);
-   EvTypeMapping_t::const_iterator it = my_mapping.find(event_type);
+   auto it = my_mapping.find(event_type);
    if (it == my_mapping.end()) {
       throw std::runtime_error(irfName + " and " + event_type + " not found.");
    }
@@ -110,7 +110,7 @@ EventTypeMapper::bitPos(const std::string & irfName,
 
 auto
 EventTypeMapper::mapping(const std::string & irfName) const -> const EventTypeMapper::EvTypeMapping_t & {
-   std::map<std::string, EvTypeMapping_t>::const_iterator it 
+   auto it 
       = m_mappings.find(irfName);
    if (it == m_mappings.end()) {
       throw std::runtime_error("IRFs named " + irfName + 
@@ -121,7 +121,7 @@ EventTypeMapper::mapping(const std::string & irfName) const -> const EventTypeMa
 
 auto
 EventTypeMapper::full_bitmasks_by_partition(const std::string & irfName) const -> const std::map<std::string, unsigned int> & {
-   std::map<std::string, std::map<std::string, unsigned int> >::const_iterator
+   auto
       it = m_full_bitmasks.find(irfName);
    if (it == m_full_bitmasks.end()) {
       throw std::runtime_error("IRFs named " + irfName + 
@@ -135,7 +135,7 @@ getPartitions(const std::string & irfName,
               std::vector<std::string> & partitions) const {
    const std::map<std::string, unsigned int> & full_bitmasks
       = full_bitmasks_by_partition(irfName);
-   for (std::map<std::string, unsigned int>::const_iterator it 
+   for (auto it 
            = full_bitmasks.begin(); it != full_bitmasks.end(); ++it) {
       partitions.push_back(it->first);
    }

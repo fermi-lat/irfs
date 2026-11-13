@@ -81,7 +81,7 @@ PsfScaling::PsfScaling(const std::string & psfFile) {
 
 // Read in the data from the single row containing the scaling parameters.
    int status(0);
-   fitsfile * fptr(0);
+   fitsfile * fptr(nullptr);
    fits_open_file(&fptr, psfFile.c_str(), READONLY, &status);
    fitsReportError(status, "PsfScaling::PsfScaling");
    int hdutype(0);

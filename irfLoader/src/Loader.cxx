@@ -35,7 +35,7 @@ void Loader::go(const std::string & name) {
 }
 
 void Loader::go(const std::vector<std::string> & irfsNames) {
-   for (std::vector<std::string>::const_iterator name(irfsNames.begin());
+   for (auto name(irfsNames.begin());
         name != irfsNames.end(); ++name) {
       go(*name);
    }

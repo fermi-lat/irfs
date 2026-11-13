@@ -12,8 +12,7 @@
 
 namespace latResponse {
 
-PsfEpochDep::PsfEpochDep() {
-}
+PsfEpochDep::PsfEpochDep() = default;
 
 PsfEpochDep::PsfEpochDep(const PsfEpochDep & other)
    : irfInterface::IPsf(other), EpochDep(other) {

@@ -21,7 +21,7 @@
 
 namespace {
    auto binIndex(double x, const std::vector<double> & xx) -> size_t {
-      std::vector<double>::const_iterator ix = 
+      auto ix = 
          std::upper_bound(xx.begin(), xx.end(), x);
       return ix - xx.begin();
    }
@@ -32,7 +32,7 @@ namespace latResponse {
 FitsTable::FitsTable(const std::string & filename,
                      const std::string & extname,
                      const std::string & tablename,
-                     size_t nrow) : m_interpolator(0) {
+                     size_t nrow) : m_interpolator(nullptr) {
 
    const tip::Table * table(tip::IFileSvc::instance().readTable(filename, 
                                                                 extname));
@@ -74,10 +74,10 @@ FitsTable::FitsTable(const std::string & filename,
    delete table;
 }
 
-FitsTable::FitsTable() : m_interpolator(0) {}
+FitsTable::FitsTable() : m_interpolator(nullptr) {}
 
 FitsTable::FitsTable(const FitsTable & rhs) 
-   : m_interpolator(0), m_logEnergies(rhs.m_logEnergies), m_mus(rhs.m_mus),
+   : m_interpolator(nullptr), m_logEnergies(rhs.m_logEnergies), m_mus(rhs.m_mus),
      m_values(rhs.m_values), m_ebounds(rhs.m_ebounds),
      m_tbounds(rhs.m_tbounds), m_minCosTheta(rhs.m_minCosTheta), 
      m_maxValue(rhs.m_maxValue) {

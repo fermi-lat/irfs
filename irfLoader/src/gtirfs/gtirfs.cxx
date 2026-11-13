@@ -53,7 +53,7 @@ private:
 
    st_app::AppParGroup & m_pars;
 
-   auto par(const std::string & key) const -> std::string;
+   [[nodiscard]] auto par(const std::string & key) const -> std::string;
 
    std::vector<irfInterface::Irfs *> m_irfs;
 
@@ -85,8 +85,8 @@ void PrintIrfs::run() {
 
    irfLoader::Loader::go();
 
-   typedef std::vector<std::string> IrfVector_t;
-   typedef std::map<std::string, std::vector<std::string> > IrfMap_t;
+   using IrfVector_t = std::vector<std::string>;
+   using IrfMap_t = std::map<std::string, std::vector<std::string> >;
 
    IrfMap_t respIds(irfLoader::Loader::respIds());
 
@@ -105,7 +105,7 @@ void PrintIrfs::run() {
       formatter.info(level) << irf->first;
       if (irf->second.size() > 1 || irf->second.front() != irf->first) {
          formatter.info(level) << " ( = ";
-         for (IrfVector_t::const_iterator component(irf->second.begin());
+         for (auto component(irf->second.begin());
               component != irf->second.end(); ++component) {
             formatter.info(level) << *component;
             if (component != irf->second.end()-1) {

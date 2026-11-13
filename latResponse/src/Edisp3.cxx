@@ -52,7 +52,7 @@ Edisp3::Edisp3(const irfUtil::IrfHdus & edisp_hdus, size_t iepoch,
    : m_fitsfile(edisp_hdus("EDISP").at(iepoch).first), 
      m_extname(edisp_hdus("EDISP").at(iepoch).second), m_nrow(nrow),
      m_parTables(m_fitsfile, m_extname, m_nrow),
-     m_loge_last(0), m_costh_last(0), m_interpolator(0) {
+     m_loge_last(0), m_costh_last(0), m_interpolator(nullptr) {
    readScaling(edisp_hdus("EDISP_SCALING").at(iepoch).first,
                edisp_hdus("EDISP_SCALING").at(iepoch).second);
 }
@@ -63,7 +63,7 @@ Edisp3::Edisp3(const std::string & fitsfile,
                size_t nrow) 
    : m_parTables(fitsfile, extname, nrow), m_loge_last(0), m_costh_last(0),
      m_fitsfile(fitsfile), m_extname(extname),
-     m_nrow(nrow), m_interpolator(0) {
+     m_nrow(nrow), m_interpolator(nullptr) {
    readScaling(fitsfile, scaling_extname);
 }
 
@@ -104,7 +104,7 @@ auto Edisp3::value(double appEnergy, double energy,
       double * my_pars(pars(energy, costh));
       return evaluate(appEnergy, energy, theta, phi, time, my_pars);
    }
-   if (m_interpolator == 0) {
+   if (m_interpolator == nullptr) {
       m_interpolator = new EdispInterpolator(m_fitsfile, m_extname, m_nrow);
    }
    return m_interpolator->evaluate(*this, appEnergy, energy,

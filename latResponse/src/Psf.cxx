@@ -36,7 +36,7 @@ Psf::Psf(const std::string & fitsfile, bool isFront,
          const std::string & extname, size_t nrow)
    : PsfBase(fitsfile, isFront, extname),
      m_parTables(fitsfile, extname, nrow), m_loge_last(0), m_costh_last(0), 
-     m_integralCache(0) {
+     m_integralCache(nullptr) {
 }
 
 Psf::Psf(const Psf & rhs) : PsfBase(rhs), 
@@ -44,7 +44,7 @@ Psf::Psf(const Psf & rhs) : PsfBase(rhs),
                             m_par0(rhs.m_par0), m_par1(rhs.m_par1),
                             m_index(rhs.m_index), m_psf_pars(rhs.m_psf_pars),
                             m_loge_last(0), m_costh_last(0), 
-                            m_integralCache(0) {}
+                            m_integralCache(nullptr) {}
    
 Psf::~Psf() {
    delete m_integralCache;

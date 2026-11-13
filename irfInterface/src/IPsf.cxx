@@ -27,7 +27,7 @@ double IPsf::s_energy(1e3);
 double IPsf::s_theta(0);
 double IPsf::s_phi(0);
 double IPsf::s_time(0);
-const IPsf * IPsf::s_self(0);
+const IPsf * IPsf::s_self(nullptr);
 
 double IPsf::s_cp(0);
 double IPsf::s_sp(0);
@@ -50,9 +50,9 @@ auto IPsf::value(const std::vector<double>& separation,
 
   std::vector<double> vals;
   vals.reserve(energy.size());
-  std::vector<double>::const_iterator itr0 = separation.begin();
-  std::vector<double>::const_iterator itr1 = energy.begin();
-  std::vector<double>::const_iterator itr2 = theta.begin();  
+  auto itr0 = separation.begin();
+  auto itr1 = energy.begin();
+  auto itr2 = theta.begin();  
   for(; (itr0 != separation.end()) && (itr1 != energy.end()) && (itr2 != theta.end()); 
       ++itr0, ++itr1, ++itr2) {
     vals.push_back(value(*itr0,*itr1,*itr2,phi,time));
@@ -78,7 +78,7 @@ auto IPsf::appDir(double energy,
    if (::getenv("USE_OLD_IPSF_SAMPLER")) {
       // Form cumlative distribution in psi (polar angle from source direction)
       std::vector<double> integrand;
-      for (std::vector<double>::iterator psi_it(s_psi_values.begin());
+      for (auto psi_it(s_psi_values.begin());
            psi_it != s_psi_values.end(); ++psi_it) {
          integrand.push_back(coneIntegrand(&(*psi_it)));
       }
@@ -161,8 +161,8 @@ auto IPsf::angularIntegral(const std::vector<double>& energy,
 
   std::vector<double> vals;
   vals.reserve(energy.size());
-  std::vector<double>::const_iterator itr0 = energy.begin();
-  std::vector<double>::const_iterator itr1 = theta.begin();  
+  auto itr0 = energy.begin();
+  auto itr1 = theta.begin();  
   for(; (itr0 != energy.end()) && (itr1 != theta.end()); ++itr0, ++itr1) {
     vals.push_back(angularIntegral(*itr0,*itr1,phi,radius,time));
   }
@@ -230,8 +230,8 @@ auto IPsf::angularContainment(const std::vector<double>& energy,
 
   std::vector<double> vals;
   vals.reserve(energy.size());
-  std::vector<double>::const_iterator itr0 = energy.begin();
-  std::vector<double>::const_iterator itr1 = theta.begin();  
+  auto itr0 = energy.begin();
+  auto itr1 = theta.begin();  
   for(; (itr0 != energy.end()) && (itr1 != theta.end()); ++itr0, ++itr1) {
     vals.push_back(angularContainment(*itr0,*itr1,phi,frac,time,rtol));
   }

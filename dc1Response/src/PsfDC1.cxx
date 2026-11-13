@@ -29,14 +29,14 @@ using CLHEP::Hep3Vector;
 namespace dc1Response {
 
 PsfDC1::PsfDC1(const std::string &filename) 
-   : DC1(filename), m_haveAngularIntegrals(false), m_acceptanceCone(0) {
+   : DC1(filename), m_haveAngularIntegrals(false), m_acceptanceCone(nullptr) {
    readEnergyScaling();
    computeCumulativeDists();
 }
 
 PsfDC1::PsfDC1(const std::string &filename, int hdu, int npars) 
    : DC1(filename, hdu, npars), m_haveAngularIntegrals(false), 
-     m_acceptanceCone(0) {
+     m_acceptanceCone(nullptr) {
    readEnergyScaling();
    computeCumulativeDists();
 }
@@ -56,7 +56,7 @@ PsfDC1::PsfDC1(const PsfDC1 &rhs) : IPsf(rhs), DC1(rhs) {
    m_nesteps = rhs.m_nesteps;
    m_logestep = rhs.m_logestep;
    if (!rhs.m_acceptanceCone) {
-      m_acceptanceCone = 0;
+      m_acceptanceCone = nullptr;
    } else {
       m_acceptanceCone 
          = new irfInterface::AcceptanceCone(*rhs.m_acceptanceCone);
@@ -100,7 +100,7 @@ auto PsfDC1::appDir(double energy,
    int ipar = getParamsIndex(energy, inclination);
 
    double xi = RandFlat::shoot();
-   std::vector<double>::const_iterator distIt 
+   auto distIt 
       = find_iterator(m_cumulativeDists[ipar], xi);
    int itheta = distIt - m_cumulativeDists[ipar].begin();
    double theta = ( (xi - *distIt)/(*(distIt + 1) - *distIt)
@@ -192,7 +192,7 @@ void PsfDC1::readEnergyScaling() {
 }
 
 auto PsfDC1::energyScaling(double energy) const -> double {
-   std::vector<double>::const_iterator enIt 
+   auto enIt 
       = find_iterator(m_scaleEnergy, energy);
    int indx = enIt - m_scaleEnergy.begin();
    double logScale = log10(energy/(*enIt))/log10(*(enIt+1)/(*enIt))
@@ -291,7 +291,7 @@ auto PsfDC1::angularIntegral(double energy, double theta,
    if (radius >= *(m_scaledAngles.end()-1)) {
       return 1.;
    }
-   std::vector<double>::const_iterator it 
+   auto it 
       = find_iterator(m_scaledAngles, radius);
    int i = it - m_scaledAngles.begin();
    double integral = (radius - *it)/(*(it+1) - *it)

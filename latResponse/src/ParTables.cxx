@@ -53,7 +53,7 @@ ParTables::ParTables(const std::string & fitsfile,
 }
 
 auto ParTables::operator[](const std::string & parName) const -> const FitsTable & {
-   std::map<std::string, FitsTable>::const_iterator table =
+   auto table =
       m_parTables.find(parName);
    if (table == m_parTables.end()) {
       throw std::runtime_error("latResponse::ParTables::operator[]: "
@@ -107,7 +107,7 @@ getPars(size_t ilogE, size_t icosth, std::vector<double> & pars) const {
 void ParTables::
 setPars(size_t ilogE, size_t icosth, const std::vector<double> & pars) {
    for (size_t i(0); i < m_parNames.size(); i++) {
-      std::map<std::string, FitsTable>::iterator table 
+      auto table 
          = m_parTables.find(m_parNames.at(i));
       table->second.setPar(ilogE, icosth, pars[i]);
    }
@@ -115,7 +115,7 @@ setPars(size_t ilogE, size_t icosth, const std::vector<double> & pars) {
 
 auto ParTables::params(size_t indx) -> std::vector<double> { 
 
-  std::map<size_t, std::string>::const_iterator itr = m_parIndices.find(indx);
+  auto itr = m_parIndices.find(indx);
   if(itr == m_parIndices.end())
     throw std::runtime_error("Parameter index out of range.");
 
@@ -126,7 +126,7 @@ auto ParTables::params(size_t indx) -> std::vector<double> {
 
 void ParTables::setParams(size_t indx, const std::vector<double>& params) {
   
-  std::map<size_t, std::string>::const_iterator itr = m_parIndices.find(indx);
+  auto itr = m_parIndices.find(indx);
   if(itr == m_parIndices.end())
     throw std::runtime_error("Parameter index out of range.");
 

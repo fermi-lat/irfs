@@ -41,7 +41,7 @@ namespace dc2Response {
 double Psf::s_energy;
 double Psf::s_theta;
 double Psf::s_phi;
-const Psf * Psf::s_self(0);
+const Psf * Psf::s_self(nullptr);
 std::vector<double> Psf::s_gammas;
 std::vector<double> Psf::s_psfNorms;
 std::vector<double> Psf::s_lowerFractions;
@@ -50,8 +50,8 @@ std::vector<double> Psf::s_psi;
 Psf::Gint Psf::s_gfunc;
 
 Psf::Psf(const std::string & fitsfile, const std::string & extname)
-   : DC2(fitsfile, extname), m_psfScaling(0), m_haveAngularIntegrals(false),
-     m_acceptanceCone(0) {
+   : DC2(fitsfile, extname), m_psfScaling(nullptr), m_haveAngularIntegrals(false),
+     m_acceptanceCone(nullptr) {
    readData();
    if (s_gammas.empty()) {
       computePsfNorms();
@@ -64,13 +64,13 @@ Psf::~Psf() {
 }
 
 Psf::Psf(const Psf & rhs) 
-   : IPsf(rhs), DC2(rhs), m_psfScaling(0), m_sigma(rhs.m_sigma),
+   : IPsf(rhs), DC2(rhs), m_psfScaling(nullptr), m_sigma(rhs.m_sigma),
      m_gamma(rhs.m_gamma), m_logElo(rhs.m_logElo), m_logEhi(rhs.m_logEhi),
      m_logE(rhs.m_logE), m_cosinc(rhs.m_cosinc), m_angScale(rhs.m_angScale),
      m_gamValues(rhs.m_angScale), m_angularIntegral(rhs.m_angularIntegral),
      m_needIntegral(rhs.m_needIntegral),
      m_haveAngularIntegrals(rhs.m_haveAngularIntegrals), 
-     m_acceptanceCone(0) {
+     m_acceptanceCone(nullptr) {
    if (rhs.m_psfScaling) {
       m_psfScaling = new PsfScaling(*rhs.m_psfScaling);
    }
